@@ -1,0 +1,34 @@
+<%= form_with(model: record_report, local: true, html: { class: "record-report-form" }) do |f| %>
+  <%= render 'shared/error_messages', model: record_report %>
+
+  <%= f.hidden_field :store_id, value: store_id %>
+
+  <div class="form-group">
+    <%= f.label :record_date %>
+    <%= f.date_field :record_date, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :start_time %>
+    <%= f.time_select :start_time, {}, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :stop_time %>
+    <%= f.time_select :stop_time, {}, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :break_time %>
+    <%= f.number_field :break_time, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= link_to '戻る', record_reports_path(store_id: store_id) %>
+    <% if request.path_info == new_record_report_path || request.path_info == record_reports_path %>
+      <%= f.submit '追加', class: "btn btn-rounded btn-primary" %>
+    <% else %>
+      <%= f.submit '更新', class: "btn btn-rounded btn-primary" %>
+    <% end %>
+  </div>
+<% end %>

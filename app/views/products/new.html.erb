@@ -1,0 +1,7 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to '商品データ管理', products_path %></li>
+  <li class="breadcrumb-item active" aria-current="page">新規追加</li>
+</ol>
+
+<%= render 'form', product: @product %>

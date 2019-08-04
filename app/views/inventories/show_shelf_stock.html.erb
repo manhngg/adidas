@@ -1,0 +1,50 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to "棚卸管理", inventories_path(store_id: @store.id) %></li>
+  <li class="breadcrumb-item"><%= link_to "状況表示", product_inventories_inventory_path(@inventory, store_id: @store.id) %></li>
+  <li class="breadcrumb-item active" aria-current="page">棚卸実査照合詳細</li>
+</ol>
+
+<%= link_to "CSV出力", shelf_stock_inventories_inventory_path(format: :csv, store_id: @store.id) %>
+
+<div>商品名: <%= @product_inventory.product_name %></div>
+<div>JANコード: <%= @product_inventory.jan_code %></div>
+<div>在庫数: <%= @product_inventory.stock_count %></div>
+<div>実査数: <%= @product_inventory.inventory_count %></div>
+<div>照合状態: <%= @product_inventory.diff_number %></div>
+
+<section class="page-pagination">
+  <%= paginate @shelf_stock_inventories %>
+</section>
+
+<table class="table table-list ">
+  <thead>
+  <tr>
+    <th>棚名</th>
+    <th>段</th>
+    <th>列</th>
+    <th>実査数</th>
+    <th>実査日時</th>
+    <th>担当者</th>
+    <th>端末番号</th>
+  </tr>
+  </thead>
+  <tbody>
+    <% @shelf_stock_inventories.each do |shelf_stock_inventory| %>
+      <tr>
+        <td><%= shelf_stock_inventory.shelf_name %> </td>
+        <td><%= shelf_stock_inventory.row %> </td>
+        <td><%= shelf_stock_inventory.col %> </td>
+        <td><%= shelf_stock_inventory.inventory_count %> </td>
+        <td><%= shelf_stock_inventory.inventory_time %> </td>
+        <td><%= shelf_stock_inventory.staff_name %> </td>
+        <td><%= shelf_stock_inventory.device_number %> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="actions">
+  <%= link_to '戻る', product_inventories_inventory_path(@inventory, store_id: @store.id) %>
+  <%= link_to '一覧へ', inventories_path(store_id: @store.id) %>
+</div>

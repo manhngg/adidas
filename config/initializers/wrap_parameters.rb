@@ -8,7 +8,9 @@ ActiveSupport.on_load(:action_controller) do
   wrap_parameters format: [:json]
 end
 
+# TODO: API側には影響があるかも、統合したらまた確認するのが必要
 # To enable root element in JSON for ActiveRecord objects.
 # ActiveSupport.on_load(:active_record) do
 #   self.include_root_in_json = true
 # end
+# ActiveModel::Serializer.config.adapter = :json

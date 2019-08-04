@@ -1,0 +1,8 @@
+<% if request.path_info == new_area_path || request.path_info == areas_path || request.path_info == prefs_select_areas_path %>
+  <%= collection_select :area, :prefecture_id, Prefecture.where(region_id: region_id),
+    :id, :name, {}, {include_blank: "", class: "form-control"} %>
+<% else %>
+  <% p request.path_info %>
+  <%= collection_select :area, :prefecture_id, Prefecture.where(region_id: region_id),
+    :id, :name, {}, {selected: @area.prefecture.id, include_blank: "", class: "form-control"} %>
+<% end %>

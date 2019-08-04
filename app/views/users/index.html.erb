@@ -1,0 +1,74 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active" aria-current="page">アプリユーザー管理</li>
+</ol>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<!-- Top link -->
+<section class="top-link">
+  <%= link_to '新規追加', new_user_path(store_id: @store.id) %>
+  <%= link_to '一括インポート', import_users_path(store_id: @store.id) %>
+</section>
+
+<!-- Search form -->
+<section class="search-form">
+  <%= search_form_for(@q, url: users_path, html: {method: :get}) do |f| %>
+    <%= f.hidden_field :store_id, value: @store.id %>
+
+    <div class="form-group">
+      <%= f.label 'ユーザーID' %>
+      <%= f.text_field :staff_id_cont, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label '名前' %>
+      <%= f.text_field :full_name_cont, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label '所属' %>
+      <%= f.text_field :department_cont, class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        検索
+      <% end %>
+    </div>
+  <% end %>
+</section>
+
+<!-- Pagination -->
+<section class="page-pagination">
+  <%= paginate @users %>
+</section>
+
+<!-- Table list -->
+<table class="table table-list ">
+  <thead>
+    <th>ユーザーID</th>
+    <th>名前</th>
+    <th>管理権限</th>
+    <th>所属</th>
+  </thead>
+  <tbody>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.staff_id %> </td>
+      <td><%= user.full_name %> </td>
+      <td></td>
+      <td><%= user.department %> </td>
+      <td class="edit"><%= link_to '編集', edit_user_path(user, store_id: @store.id),
+        class: "btn btn-sm btn-rounded btn-outline-primary" %></td>
+<!--      # TODO: Refactor the format with all files-->
+      <td class="delete">
+        <%= render "shared/modal_destroy", object_name: "#{user.staff_id} #{user.full_name}", object: user,
+          path: user_path(user, store_id: @store.id) %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

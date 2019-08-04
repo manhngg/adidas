@@ -1,0 +1,9 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to "アプリユーザー管理", users_path(store_id: @store.id) %></li>
+  <li class="breadcrumb-item active" aria-current="page">編集</li>
+</ol>
+
+<%= render 'form', user: @user, store_id: @store.id %>
+
+<%= hidden_field_tag 'user_id', @user.stores.as_json.pluck('id').to_json %>

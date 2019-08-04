@@ -1,0 +1,45 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to "棚卸管理", inventories_path(store_id: @store.id) %></li>
+  <li class="breadcrumb-item active" aria-current="page">エラー一覧</li>
+</ol>
+
+<section class="top-info">
+  <span>棚卸開始日:</span><%= @inventory.start_time.to_date if @inventory.start_time.present? %>
+</section>
+
+<section class="page-pagination">
+  <%= paginate @shelf_stock_inventories %>
+</section>
+
+<table class="table table-list ">
+  <thead>
+    <th>JANコード</th>
+    <th>エラー種別</th>
+    <th>棚名</th>
+    <th>段</th>
+    <th>列</th>
+    <th>実査数</th>
+    <th>実査日時</th>
+    <th>担当者</th>
+    <th>端末番号</th>
+  </thead>
+  <tbody>
+    <% @shelf_stock_inventories.each do |shelf_stock_inventory| %>
+      <tr>
+        <td><%= shelf_stock_inventory.product_inventory.jan_code %> </td>
+        <td><%= shelf_stock_inventory.error_type %> </td>
+        <td><%= shelf_stock_inventory.shelf_name %> </td>
+        <td><%= shelf_stock_inventory.row %> </td>
+        <td><%= shelf_stock_inventory.col %> </td>
+        <td><%= shelf_stock_inventory.inventory_count %> </td>
+        <td><%= shelf_stock_inventory.inventory_time %> </td>
+        <td><%= shelf_stock_inventory.staff_name %> </td>
+        <td><%= shelf_stock_inventory.device_number %> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to '戻る', inventories_path(store_id: @store.id) %>
+

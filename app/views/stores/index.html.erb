@@ -1,0 +1,79 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active" aria-current="page">店舗データ管理</li>
+</ol>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<!-- Top link -->
+<section class="top-link">
+  <%= link_to '新規追加', new_store_path %>
+  <%= link_to '一括インポート', import_stores_path %>
+</section>
+
+<!-- Search form -->
+<section class="search-form">
+  <%= search_form_for(@q, url: stores_path, method: :get) do |f| %>
+    <div class="form-group">
+      <%= f.label '地方' %>
+      <%= f.collection_select :region_id_eq, Region.all, :id, :name, {}, {include_blank: true, class: "form-control"} %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label '県' %>
+      <%= render 'search_prefecture', region_id: Region.first.id %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label 'エリア' %>
+      <%= render 'search_area', prefecture_id: Prefecture.first.id %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label '店舗名' %>
+      <%= f.text_field :name_cont, class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        <span>検索</span>
+      <% end %>
+    </div>
+  <% end %>
+</section>
+
+<!-- Pagination -->
+<section class="page-pagination">
+  <%= paginate @stores %>
+</section>
+
+<table class="table table-list">
+  <thead>
+    <tr>
+      <th>地方</th>
+      <th>県</th>
+      <th>エリア</th>
+      <th>店舗名</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @stores.each do |store| %>
+      <tr>
+        <td><%= store.region.name %> </td>
+        <td><%= store.prefecture.name %> </td>
+        <td><%= store.area.name %> </td>
+        <td><%= store.name %> </td>
+        <td class="edit"><%= link_to '編集', edit_store_path(store),
+          class: "btn btn-sm btn-rounded btn-outline-primary" %></td>
+        <td class="delete">
+          <%= render "shared/modal_destroy", object_name: "#{store.name}", object: store,
+            path: store_path(store) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

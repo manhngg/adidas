@@ -1,0 +1,88 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active" aria-current="page">出退勤管理レポート</li>
+</ol>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<!-- Top link -->
+<section class="top-link">
+  <%= link_to '新規追加', new_record_report_path(store_id: @store.id) %>
+</section>
+
+<section class="search-form">
+  <%= search_form_for(@q, url: record_reports_path, html: { method: :get }) do |f| %>
+    <%= f.hidden_field :store_id, value: @store.id %>
+
+    <div class="form-group">
+      <!--    # TODO: set store-->
+      <%= f.label '店舗' %>
+      <%= f.collection_select :store_id_eq, Store.all, :id, :name, { prompt: '選択してください' }, { class: "form-control" } %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label '名前' %>
+      <%= f.text_field :user_full_name_cont, class: "form-control" %>
+    </div>
+
+    <div class="form-group two-date-field">
+      <%= f.label '期間' %>
+      <%= f.date_field :record_date_gteq, class: "form-control" %>
+      <span>~</span>
+      <%= f.date_field :record_date_lteq, class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        <span>検索</span>
+      <% end %>
+
+      <%= button_tag type: :submit, name: 'export_csv', class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">cloud_download</i>
+        <span>CSV出力</span>
+      <% end %>
+
+    </div>
+  <% end %>
+</section>
+
+<section class="page-pagination">
+  <%= paginate @record_reports %>
+</section>
+
+<table class="table table-list ">
+  <thead>
+    <th>店舗</th>
+    <th>ユーザーID</th>
+    <th>名前</th>
+    <th>日付</th>
+    <th>出勤時刻</th>
+    <th>退勤時刻</th>
+    <th>休憩時間</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <% @record_reports.each do |record_report| %>
+      <tr>
+<!--        # TODO: Set format of datetime-->
+        <td><%= record_report.store.name %> </td>
+        <td><%= record_report.user.staff_id %> </td>
+        <td><%= record_report.user.full_name %> </td>
+        <td><%= record_report.record_date %> </td>
+        <td><%= record_report.start_time %> </td>
+        <td><%= record_report.stop_time %> </td>
+        <td><%= record_report.break_time %> </td>
+        <td><%= record_report.edit_flag %> </td>
+        <td class="edit"><%= link_to '編集',
+          edit_record_report_path(record_report), class: "btn btn-sm btn-rounded btn-outline-primary" %></td>
+        <td class="delete">
+          <%= render "shared/modal_destroy",
+            object_name: "#{record_report.user.full_name} #{record_report.record_date}", object: record_report,
+            path: record_report_path(record_report, store_id: @store.id) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

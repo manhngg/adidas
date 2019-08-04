@@ -1,0 +1,81 @@
+<!-- Top group menu -->
+<section class="top-group-menu">
+  <div class="btn-group" role="group">
+    <%= link_to "検品結果一覧表示", inspections_path(store_id: @store.id), class: "btn btn-primary" %>
+    <%= link_to "仕入検品エラーリスト表示", inspection_errors_path(store_id: @store.id), class: "btn btn-secondary" %>
+  </div>
+</section>
+
+<section class="top-info">
+  <b>発注NO：</b><%= @order.order_number %>
+</section>
+
+<!-- Search form -->
+<section class="search-form">
+  <%= search_form_for(@q, url: inspection_path(@order), html: {method: :get}) do |f| %>
+    <%= hidden_field_tag :store_id, @store.id %>
+
+    <div class="form-group">
+      <%= f.label '商品名' %>
+      <%= f.text_field :product_name_cont, class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        <span>検索</span>
+      <% end %>
+
+      <%= button_tag type: :submit, name: 'export_csv', class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">present_to_all</i>
+        <span>CSV出力</span>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="switchs inspection-switchs">
+    <div class="custom-control custom-switch">
+      <input type="checkbox" id="showOnlyUnmatchedInspection" class="custom-control-input" checked>
+      <label class="custom-control-label" for="showOnlyUnmatchedInspection">検品数が不一致のみ表示</label>
+    </div>
+  </div>
+</section>
+
+<!-- Pagination -->
+<section class="page-pagination">
+  <%= paginate @order_items %>
+</section>
+
+<table class="table table-list ">
+  <thead>
+    <tr>
+      <th>商品名</th>
+      <th>JANコード</th>
+      <th>取引先名</th>
+      <th>納品予定日</th>
+      <th>納品予定数</th>
+      <th>検品数</th>
+      <th>最終検品日</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order_items.includes(:product, :supplier, :inspection).each do |order_item| %>
+      <% if order_item.order_count == order_item.inspection.inspection_count %>
+        <% matched = "matched" %>
+        <% display = "none" %>
+      <% end %>
+      <tr class="<%= matched %>" style="display: <%= display %>">
+        <!--        # TODO: date format-->
+        <td><%= order_item.product.name %> </td>
+        <td><%= order_item.product.jan_code %> </td>
+        <td><%= order_item.supplier.name %> </td>
+        <td><%= order_item.delivery_date.to_date %> </td>
+        <td><%= order_item.order_count %> </td>
+        <td><%= order_item.inspection.inspection_count %> </td>
+        <td><%= order_item.inspection.last_inspection.try(:to_date) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to '戻る', inspections_path(store_id: @store.id) %>

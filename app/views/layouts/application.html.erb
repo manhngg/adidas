@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Adidas</title>
+    <title>GLORYCcApiWeb</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="container">
+      <%= render "shared/header" %>
+      <%= render "shared/aside_menu" unless devise_controller? %>
+      <main>
+        <%= render "shared/aside_menu_button" unless devise_controller? %>
+        <%= yield %>
+      </main>
+    </div>
   </body>
 </html>

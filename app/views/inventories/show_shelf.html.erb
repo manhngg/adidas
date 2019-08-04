@@ -1,0 +1,32 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to "棚卸管理", inventories_path(store_id: @store.id) %></li>
+  <li class="breadcrumb-item active" aria-current="page">状況表示</li>
+</ol>
+
+<section class="page-pagination">
+  <%= paginate @shelf_inventories %>
+</section>
+
+<table class="table table-list ">
+  <thead>
+    <th>棚名</th>
+    <th>状況</th>
+    <th>完了時刻</th>
+    <th>担当者</th>
+    <th>端末番号</th>
+  </thead>
+  <tbody>
+    <% @shelf_inventories.each do |shelf_inventory| %>
+      <tr>
+        <td><%= shelf_inventory.shelf_name %> </td>
+        <td><%= shelf_inventory.status %> </td>
+        <td><%= shelf_inventory.finish_time %> </td>
+        <td><%= shelf_inventory.staff_name %> </td>
+        <td><%= shelf_inventory.device_number %> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to '戻る', inventories_path(store_id: @store.id) %>

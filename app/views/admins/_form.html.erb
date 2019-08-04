@@ -1,0 +1,57 @@
+<%= form_for(admin, html: {class: "user-form"}) do |f| %>
+  <%= render 'shared/error_messages', model: admin %>
+
+  <div class="form-group">
+    <%= f.label 'ユーザーID' %>
+    <%= f.text_field :staff_id, class: "form-control" %>
+  </div>
+
+  <div class="form-group user-last-name">
+    <%= f.label :姓 %>
+    <%= f.text_field :last_name, class: "form-control" %>
+  </div>
+
+  <div class="form-group user-first-name">
+    <%= f.label :名 %>
+    <%= f.text_field :first_name, class: "form-control" %>
+  </div>
+
+  <div class="form-group user-last-name">
+    <%= f.label 'セイ' %>
+    <%= f.text_field :last_name_furigana, class: "form-control" %>
+  </div>
+
+  <div class="form-group user-first-name">
+    <%= f.label 'メイ' %>
+    <%= f.text_field :first_name_furigana, class: "form-control" %>
+  </div>
+
+  <div class="form-group user-department">
+    <%= f.label '所属' %>
+    <%= f.text_field :department, class: "form-control" %>
+  </div>
+
+  <%= render "modal" %>
+
+  <div class="form-group">
+    <%= f.label 'パスワード' %>
+    <%# if @minimum_password_length %>
+    <!--      <em>(<%#= @minimum_password_length %> characters minimum)</em>-->
+    <!--    <%# end %><br />-->
+    <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label 'パスワード確認' %><br/>
+    <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= link_to '戻る', admins_path %>
+    <% if request.path_info == new_admin_path || request.path_info == admins_path %>
+      <%= f.submit '追加', class: "btn btn-rounded btn-primary" %>
+    <% else %>
+      <%= f.submit '更新', class: "btn btn-rounded btn-primary" %>
+    <% end %>
+  </div>
+<% end %>

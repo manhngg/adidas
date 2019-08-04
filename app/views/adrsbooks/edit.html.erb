@@ -1,0 +1,8 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to "電話帳管理", adrsbooks_path(store_id: @store.id) %></li>
+  <li class="breadcrumb-item active" aria-current="page">編集</li>
+</ol>
+
+<%= render "form", adrsbook: @adrsbook,
+  adrsbook_subcategories: @adrsbook_subcategories, store_id: @store.id %>

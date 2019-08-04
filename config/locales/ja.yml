@@ -1,0 +1,38 @@
+ja:
+  activerecord:
+    models:
+      admin: "管理ユーザー"
+      user: "ユーザー"
+      supplier: "取引先"
+      adrsbook: "電話帳"
+      device: "端末"
+      inspection: "検品"
+      message_group: "掲示板グループ"
+      transceiver_group: "トランシーバグループ"
+      store: "店舗"
+
+    attributes:
+      user:
+        staff_id: "ユーザーID"
+        first_name: "名"
+        first_name_furigana: "メイ"
+        last_name: "姓"
+        last_name_furigana: "セイ"
+        password: "パスワード"
+        password_confirmation: "パスワード確認"
+
+      product:
+        name: "商品名"
+        jan_code: "JANコード"
+
+      shelf:
+        name: "棚名"
+        row_count: "段数"
+        col_count: "列数"
+
+      stock:
+        stock_count: "在庫数"
+        price: "単価"
+
+      inventory:
+        start_time: "棚卸開始日"

@@ -1,0 +1,2 @@
+<%= collection_select :q, :area_id_eq, Area.where(prefecture_id: prefecture_id),
+  :id, :name, {}, {include_blank: true, class: "form-control"} %>

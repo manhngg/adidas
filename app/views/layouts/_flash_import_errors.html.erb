@@ -1,0 +1,12 @@
+<!-- Flash message -->
+<% if flash.any? %>
+  <div class="alert alert-success">
+    <% if flash[:notice].class == Array %>
+      <% flash[:notice].each do |msg| %>
+        <%= msg %><br />
+      <% end %>
+    <% else %>
+      <%= flash[:notice] %>
+    <% end %>
+  </div>
+<% end %>

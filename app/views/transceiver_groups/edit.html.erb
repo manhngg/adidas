@@ -1,0 +1,22 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to 'グループ管理', groups_path(store_id: @store.id) %></li>
+  <li class="breadcrumb-item active" aria-current="page">編集</li>
+</ol>
+
+<%= form_for(@transceiver_group, html: {class: "horizontal-form"}) do |f| %>
+  <%= render 'shared/error_messages', model: @transceiver_group %>
+  <%= f.hidden_field :store_id, value: @store.id %>
+
+  <div class="form-group">カテゴリ:　　トランシーバ</div>
+
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= link_to '戻る', groups_path %>
+    <%= f.submit '更新', class: "btn btn-rounded btn-primary" %>
+  </div>
+<% end %>

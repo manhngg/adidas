@@ -1,0 +1,85 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active" aria-current="page">グループ管理</li>
+</ol>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<!-- Top link -->
+<section class="top-link">
+  <%= link_to '新規追加', new_group_path(store_id: @store.id) %>
+</section>
+
+<!-- Search form -->
+<section class="search-form">
+  <%= form_tag(groups_path, method: :get) do %>
+    <%= hidden_field_tag :store_id, @store.id %>
+
+    <div class="form-group">
+      <%= label_tag :カテゴリ %>
+      <%= select_tag "type",
+        options_for_select([["選択してください", "all"], ["掲示板", "message"], ["トランシーバ", "transceiver"]]),
+        class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= label_tag :グループ名 %>
+      <%= text_field_tag :name, params[:name], class: "form-control" %>
+    </div>
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        <span>検索</span>
+      <% end %>
+    </div>
+  <% end %>
+</section>
+
+<!-- Pagination -->
+<section class="page-pagination">
+  <%= paginate @groups %>
+</section>
+
+<section>
+  <table class="table table-list ">
+    <thead>
+      <tr>
+        <th>カテゴリ</th>
+        <th>グループ名</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @groups.each do |group| %>
+        <% if group.kind_of?(MessageGroup) %>
+          <tr>
+            <td>掲示板</td>
+            <td><%= group.name %> </td>
+            <td class="edit">
+              <%= link_to '編集', edit_message_group_path(group, store_id: @store.id),
+                class: "btn btn-sm btn-rounded btn-outline-primary" %>
+            </td>
+            <td class="delete">
+              <%= render "shared/modal_destroy", object_name: "#{group.name}",
+                object: group, path: message_group_path(group, store_id: @store.id)  %>
+            </td>
+          </tr>
+        <% elsif group.kind_of?(TransceiverGroup) %>
+          <tr>
+            <td>トランシーバ</td>
+            <td><%= group.name %> </td>
+            <td class="edit">
+              <%= link_to '編集', edit_transceiver_group_path(group, store_id: @store.id),
+                class: "btn btn-sm btn-rounded btn-outline-primary" %>
+            </td>
+            <td class="delete">
+              <%= render "shared/modal_destroy", object_name: "#{group.name}",
+                object: group, path: transceiver_group_path(group, store_id: @store.id) %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</section>

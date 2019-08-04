@@ -1,0 +1,19 @@
+<%= form_for @adrsbook_subcategory, html: { class: "horizontal-form" } do |f| %>
+  <%= render "shared/error_messages", model: @adrsbook_subcategory %>
+
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <%= f.hidden_field :order, value: 1 %>
+
+  <div class="actions">
+    <%= link_to '戻る', adrsbook_subcategories_path %>
+    <% if request.path_info == new_adrsbook_subcategory_path %>
+      <%= f.submit '追加', class: "btn btn-rounded btn-primary" %>
+    <% else %>
+      <%= f.submit '更新', class: "btn btn-rounded btn-primary" %>
+    <% end %>
+  </div>
+<% end %>

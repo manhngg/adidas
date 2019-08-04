@@ -1,0 +1,27 @@
+<%= form_with model: supplier, local: true, html: { class: "horizontal-form" } do |f| %>
+  <%= render 'shared/error_messages', model: supplier %>
+<!--  # TODO: 日本語化-->
+  <div class="form-group">
+    <%= f.label :supplier_number %>
+    <%= f.text_field :supplier_number, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :furigana %>
+    <%= f.text_field :furigana, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= link_to '戻る', suppliers_path %>
+    <% if request.path_info == new_supplier_path || request.path_info == suppliers_path %>
+      <%= f.submit '追加', class: "btn btn-rounded btn-primary" %>
+    <% else %>
+      <%= f.submit '更新', class: "btn btn-rounded btn-primary" %>
+    <% end %>
+  </div>
+<% end %>

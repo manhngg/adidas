@@ -1,0 +1,72 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active" aria-current="page">検品データ管理</li>
+</ol>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<!-- Top link -->
+<section class="top-link">
+  <%= link_to '新規追加', new_order_path(store_id: @store.id) %>
+  <%= link_to '一括インポート', import_orders_path(store_id: @store.id) %>
+</section>
+
+<section class="search-form">
+  <%= search_form_for(@q, url: orders_path, html: { method: :get }) do |f| %>
+    <%= hidden_field_tag :store_id, @store.id %>
+
+    <div class="form-group">
+      <!--    # TODO: set store-->
+      <%= f.label '発注NO' %>
+      <%= f.text_field :order_number_cont, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label '取引先名' %>
+      <%= f.text_field :supplier_name_cont, class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        検索
+      <% end %>
+    </div>
+
+  <% end %>
+</section>
+
+<section class="page-pagination">
+  <%= paginate @orders %>
+</section>
+
+<table class="table table-list ">
+  <thead>
+      <th>発注NO</th>
+      <th>取引先名</th>
+      <th>納品予定日</th>
+      <th>納品予定数</th>
+      <th>検品数</th>
+      <th>最終検品日</th>
+  </thead>
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+<!--        # TODO: date format-->
+        <td><%= order.order_number %> </td>
+        <td><%= order.supplier.name %> </td>
+        <td><%= order.order_date.to_date if order.order_date.present? %> </td>
+        <td><%= order.order_count %> </td>
+        <td><%= order.inspection_count %> </td>
+        <td><%= order.last_inspection&.to_date %> </td>
+        <td class="edit"><%= link_to '編集', edit_order_path(order, store_id: @store.id),
+           class: "btn btn-sm btn-rounded btn-outline-primary" %></td>
+        <td class="delete">
+          <%= render "shared/modal_destroy", object_name: "#{order.order_number} #{order.supplier.name}",
+             object: order, path: order_path(order, store_id: @store.id) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

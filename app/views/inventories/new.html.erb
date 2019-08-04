@@ -1,0 +1,21 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to "棚卸管理", inventories_path(store_id: @store.id) %></li>
+  <li class="breadcrumb-item active" aria-current="page">新規追加</li>
+</ol>
+
+<%= form_with(model: @inventory, local: true, html: { class: "horizontal-form" }) do |f| %>
+  <%= f.hidden_field :store_id, value: @store.id %>
+  <%= render 'shared/error_messages', model: @inventory %>
+
+  <div class="form-group">
+    <%= f.label :start_time %>
+    <%= f.date_field :start_time, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <!--  # TODO: set store-->
+    <%= link_to "戻る", inventories_path(store_id: @store.id) %>
+    <%= f.submit '棚卸開始', disabled: Inventory.exists?(status:[1,2]), class: "btn btn-rounded btn-primary" %>
+  </div>
+<% end %>

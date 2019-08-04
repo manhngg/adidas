@@ -1,0 +1,31 @@
+<%= form_with model: @area, local: true, class: "horizontal-form" do |f| %>
+  <%= render 'shared/error_messages', model: @area %>
+
+  <div class="form-group">
+    <%= f.label :region %>
+    <%= render 'region'%>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :prefecture %>
+    <% if request.path_info == new_area_path || request.path_info == areas_path %>
+      <%= render 'prefecture', region_id: Region.first.id %>
+    <% else %>
+      <%= render 'prefecture', region_id: @area.region.id %>
+    <% end %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= link_to '戻る', areas_path %>
+    <% if request.path_info == new_area_path %>
+      <%= f.submit '追加', class: "btn btn-rounded btn-primary" %>
+    <% else %>
+      <%= f.submit '更新', class: "btn btn-rounded btn-primary" %>
+    <% end %>
+  </div>
+<% end %>

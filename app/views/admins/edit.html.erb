@@ -1,0 +1,9 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to "管理ユーザー管理", admins_path %></li>
+  <li class="breadcrumb-item active" aria-current="page">編集</li>
+</ol>
+
+<%= render 'form', admin: @admin %>
+
+<%= hidden_field_tag 'admin_id', @admin.stores.as_json.pluck('id').to_json %>

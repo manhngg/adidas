@@ -1,0 +1,50 @@
+<!-- Top group menu -->
+<section class="top-group-menu">
+  <div class="btn-group" role="group">
+    <%= link_to "検品結果一覧表示", inspections_path(store_id: @store.id), class: "btn btn-secondary" %>
+    <%= link_to "仕入検品エラーリスト表示", inspection_errors_path(store_id: @store.id), class: "btn btn-primary" %>
+  </div>
+</section>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<section class="top-link">
+  <%= link_to "CSV出力", inspection_errors_path(format: :csv, store_id: @store.id) %>
+</section>
+
+<!-- Pagination -->
+<section class="page-pagination">
+  <%= paginate @inspection_errors %>
+</section>
+
+<table class="table table-list ">
+  <thead>
+  <tr>
+    <th>日付</th>
+    <th>個数</th>
+    <th>JANコード</th>
+    <th>エラー種別</th>
+  </tr>
+  </thead>
+  <% @inspection_errors.each do |inspection_error| %>
+    <tbody>
+    <tr>
+<!--      # TODO: Set format of datetime-->
+      <td><%= inspection_error.inspection_date.to_date %> </td>
+      <td><%= inspection_error.inspection_count %> </td>
+      <td><%= inspection_error.jan_code %> </td>
+      <td>
+        <% case inspection_error.error_type %>
+        <% when "no_record" %>
+          <%= "JANなし" %>
+        <% when "not_registered" %>
+          <%= "JAN未登録" %>
+        <% when "no_order" %>
+          <%= "発注なし" %>
+        <% end %>
+      </td>
+    </tr>
+    </tbody>
+  <% end %>
+</table>

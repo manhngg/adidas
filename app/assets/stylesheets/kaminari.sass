@@ -1,0 +1,62 @@
+// Style for Kaminari pagination
+$color-glory: #BF0B0B
+$color-aside-text: #a4a4a4
+
+// Paginator li a
+.pagination > li > a
+  background-color: white
+  color: $color-glory
+
+// Paginator li a hover
+.pagination > li > a:focus
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+  background-color: white
+  color: $color-glory
+  border-color: white
+
+// Paginator circle active
+.pagination.pagination-circle
+  .page-item.active
+    .page-link
+      margin-left: 10px
+      margin-right: 10px
+      border-radius: 50%
+      color: $color-glory
+      background-color: white
+      border-color: $color-glory
+
+// Paginator circle disabled
+.page-item.disabled .page-link
+  border-color: transparent
+
+// Paginator circle normal
+.pagination.pagination-circle
+.page-item
+  .page-link
+    margin-left: 10px
+    margin-right: 10px
+    color: $color-aside-text
+    border-radius: 50%
+    border-color: white
+
+// Paginator _firt_page _prev_page _next_page _last_page icon
+.pagination.pagination-circle
+.page-item
+  .page-link
+    .fa-angle-double-left:before
+      content: "\f100"
+    .fa-angle-left:before
+      content: "\f104"
+    .fa-angle-right:before
+      content: "\f105"
+    .fa-angle-double-right:before
+      content: "\f101"
+    *, *::before, *::after
+      margin-top: -1px
+      font-size: 20px
+
+// Paginator click
+.page-link:focus
+  box-shadow: none

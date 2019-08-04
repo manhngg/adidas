@@ -1,0 +1,59 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active" aria-current="page">電話帳詳細分類</li>
+</ol>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<!-- Top link -->
+<section class="top-link">
+  <%= link_to "新規追加", new_adrsbook_subcategory_path %>
+</section>
+
+<!-- Search form -->
+<section class="search-form">
+  <%= search_form_for @q do |f| %>
+
+    <div class="form-group">
+      <%= f.label :詳細分類 %>
+      <%= f.search_field :name_cont, class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        検索
+      <% end %>
+    </div>
+
+  <% end %>
+</section>
+<!-- Pagination -->
+<section class="page-pagination">
+  <%= paginate @adrsbook_subcategories %>
+</section>
+
+<!-- Table list -->
+<section>
+  <table class="table table-list ">
+    <thead>
+      <tr>
+        <th>名前</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="sortable">
+      <% @adrsbook_subcategories.each_with_sortable_id do |adrsbook_subcategory, sortable_id| %>
+        <tr id="<%= sortable_id %>">
+          <td><%= adrsbook_subcategory.name %></td>
+          <td><%= link_to '編集', edit_adrsbook_subcategory_path(adrsbook_subcategory), class: "btn btn-sm btn-rounded btn-outline-primary" %></td>
+          <td>
+            <%= render "shared/modal_destroy", object_name: "#{adrsbook_subcategory.name}", object: adrsbook_subcategory %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

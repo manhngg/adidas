@@ -1,0 +1,7 @@
+<% if request.path_info == new_area_path || request.path_info == areas_path %>
+  <%= collection_select :area, :region_id, Region.all,
+    :id, :name, {}, {include_blank: "", class: "form-control"} %>
+<% else %>
+  <%= collection_select :area, :region_id, Region.all,
+    :id, :name, {}, {selected: @area.region.id, include_blank: true, class: "form-control"} %>
+<% end %>

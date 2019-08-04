@@ -1,0 +1,134 @@
+<aside id="asideMenu">
+
+  <ul>
+    <% if can?(:manage, Admin) %>
+      <%= link_to admins_path do %>
+        <li class="<%= is_active_controller("admins") %>">
+          管理ユーザー管理
+        </li>
+      <% end %>
+    <% end %>
+
+    <% if can?(:manage, Area) %>
+      <%= link_to areas_path do %>
+        <li class="<%= is_active_controller("areas") %>">
+          エリアデータ管理
+        </li>
+      <% end %>
+    <% end %>
+
+    <% if can?(:manage, Store) %>
+      <%= link_to stores_path do %>
+        <li class="<%= is_active_controller("stores") %>">
+          店舗データ管理
+        </li>
+      <% end %>
+    <% end %>
+
+    <% if can?(:manage, Product) %>
+      <%= link_to products_path do %>
+        <li class="<%= is_active_controller("products") %>">
+          商品データ管理
+        </li>
+      <% end %>
+    <% end %>
+
+    <% if can?(:manage, Supplier) %>
+      <%= link_to suppliers_path do %>
+        <li class="<%= is_active_controller("suppliers") %>">
+          取引先データ管理
+        </li>
+      <% end %>
+    <% end %>
+
+    <% if can?(:cud, User) %>
+      <a href="javascript:void(0)" class="aside-menu-item">
+        <li class="<%= is_active_controller("users") %>">
+          アプリユーザー管理
+        </li>
+      </a>
+      <%= render partial: "shared/aside_menu_stores", locals: { ctrl_name: "users" } %>
+    <% end %>
+
+    <% if can?(:cud, RecordReport) %>
+      <a href="javascript:void(0)" class="aside-menu-item">
+        <li class="<%= is_active_controller("record_reports") %>">
+          出退勤管理レポート
+        </li>
+      </a>
+      <%= render partial: "shared/aside_menu_stores", locals: { ctrl_name: "record_reports" } %>
+    <% end %>
+
+    <% if can?(:cud, MessageGroup) %>
+      <a href="javascript:void(0)" class="aside-menu-item">
+        <li class="<%= is_active_controllers(["groups", "message_groups", "transceiver_groups"]) %>">
+          グループ管理
+        </li>
+      </a>
+      <%= render partial: "shared/aside_menu_stores", locals: { ctrl_name: "groups" } %>
+    <% end %>
+
+    <% if can?(:cud, Device) %>
+      <a href="javascript:void(0)" class="aside-menu-item">
+        <li class="<%= is_active_controller("devices") %>">
+          端末管理
+        </li>
+      </a>
+      <%= render partial: "shared/aside_menu_stores", locals: { ctrl_name: "devices" } %>
+    <% end %>
+
+    <% if can?(:cud, Adrsbook) %>
+      <a href="javascript:void(0)" class="aside-menu-item">
+        <li class="<%= is_active_controller("adrsbooks") %>">
+          電話帳管理
+        </li>
+      </a>
+      <%= render partial: "shared/aside_menu_stores", locals: { ctrl_name: "adrsbooks" } %>
+    <% end %>
+
+    <% if can?(:cud, Inspection) %>
+      <a href="javascript:void(0)" class="aside-menu-item">
+        <li class="<%= is_active_controller("inspections") %>">
+          検品管理
+        </li>
+      </a>
+      <%= render partial: "shared/aside_menu_stores", locals: { ctrl_name: "inspections" } %>
+    <% end %>
+
+    <% if can?(:cud, Order) %>
+      <a href="javascript:void(0)" class="aside-menu-item">
+        <li class="<%= is_active_controller("orders") %>">
+          検品データ管理
+        </li>
+      </a>
+      <%= render partial: "shared/aside_menu_stores", locals: { ctrl_name: "orders" } %>
+    <% end %>
+
+    <% if can?(:cud, Inventory) %>
+      <a href="javascript:void(0)" class="aside-menu-item">
+        <li class="<%= is_active_controller("inventories") %>">
+          棚卸管理
+        </li>
+      </a>
+      <%= render partial: "shared/aside_menu_stores", locals: { ctrl_name: "inventories" } %>
+    <% end %>
+
+    <% if can?(:cud, Stock) %>
+      <a href="javascript:void(0)" class="aside-menu-item">
+        <li class="<%= is_active_controller("stocks") %>">
+          在庫データ管理
+        </li>
+      </a>
+      <%= render partial: "shared/aside_menu_stores", locals: { ctrl_name: "stocks" } %>
+    <% end %>
+
+    <% if can?(:cud, Shelf) %>
+      <a href="javascript:void(0)" class="aside-menu-item">
+        <li class="<%= is_active_controller("shelves") %>">
+          棚管理
+        </li>
+      </a>
+      <%= render partial: "shared/aside_menu_stores", locals: { ctrl_name: "shelves" } %>
+    <% end %>
+  </ul>
+</aside>

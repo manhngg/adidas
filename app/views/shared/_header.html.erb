@@ -1,0 +1,22 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <%= link_to root_path, class: "navbar-brand" do %>
+      <%= image_tag "symbol_01.png" %>
+      <%= image_tag "text_01.png" %>
+    <% end %>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <% if admin_signed_in? %>
+          <li class="nav-item active">
+            <%= link_to "ログアウト", admin_logout_path, method: :delete,
+              data: { confirm: "ログアウトしてよろしいですか？" }, class: "nav-link btn btn-sm btn-rounded btn-primary" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </nav>
+</header>

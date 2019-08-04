@@ -1,0 +1,72 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active" aria-current="page">取引先データ管理</li>
+</ol>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<!-- Top link -->
+<section class="top-link">
+  <%= link_to "新規追加", new_supplier_path %>
+  <%= link_to "一括インポート", import_suppliers_path %>
+</section>
+
+<!-- Search form -->
+
+<section class="search-form">
+  <%= search_form_for(@q, url: suppliers_path, html: { method: :get }) do |f| %>
+    <div class="form-group">
+      <%= f.label :取引先ID %>
+      <%= f.text_field :supplier_number_cont, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :カタカナ %>
+      <%= f.text_field :furigana_cont, class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        検索
+      <% end %>
+    </div>
+
+  <% end %>
+</section>
+
+<!-- Pagination -->
+<section class="page-pagination">
+  <%= paginate @suppliers %>
+</section>
+
+<!-- Table list -->
+<section>
+  <table class="table table-list ">
+    <thead>
+      <tr>
+        <th>取引先ID</th>
+        <th>取引先名</th>
+        <th>カタカナ</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @suppliers.each do |supplier| %>
+        <tr>
+          <td><%= supplier.supplier_number %> </td>
+          <td><%= supplier.name %></td>
+          <td><%= supplier.furigana %> </td>
+          <td class="edit"><%= link_to '編集', edit_supplier_path(supplier),
+            class: "btn btn-sm btn-rounded btn-outline-primary" %></td>
+          <td class="delete">
+            <%= render "shared/modal_destroy", object_name: "#{supplier.name}の取引先", object: supplier,
+              path: supplier_path(supplier) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

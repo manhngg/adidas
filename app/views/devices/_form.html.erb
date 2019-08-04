@@ -1,0 +1,32 @@
+<%= form_with(model: device, local: true, class: "horizontal-form") do |f| %>
+  <%= render 'shared/error_messages', model: device %>
+
+  <%= f.hidden_field :store_id, value: store_id %>
+
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <% unless request.path_info == new_device_path || request.path_info == devices_path %>
+    <div class="form-group">
+      <%= f.label :number %>
+      <%= f.text_field :number, disabled: true, class: "form-control" %>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :encrypted_password %>
+    <%= f.password_field :encrypted_password, value: device.encrypted_password, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= link_to "戻る", devices_path(store_id: store_id) %>
+    <% if request.path_info == new_device_path || request.path_info == devices_path %>
+      <%= f.submit '番号発行', class: "btn btn-rounded btn-primary" %>
+    <% else %>
+      <%= f.submit '更新', class: "btn btn-rounded btn-primary" %>
+    <% end %>
+  </div>
+
+<% end %>
