@@ -1,0 +1,51 @@
+$color-glory: #BF0B0B
+$color-gray: #ebeef1
+
+html, body
+  height: 100%
+
+body
+  background: #fafafa
+
+main
+  font-size: 14px
+
+.custom-control .custom-control-input:checked~.custom-control-label::before
+  background: $color-glory
+  border: none
+
+.container
+  background: white
+  padding: 0
+  min-width: 1280px
+  min-height: 100%
+  overflow: hidden
+
+// For Material icons
+.btn-icon
+  display: inline-flex
+  justify-content: center
+  i
+    margin-right: 5px
+
+.btn-primary[disabled]
+  background-color: #AAAAAA
+  border: none
+  color: #000000
+
+.btn-secondary
+  border: 1px solid #DDDDDD
+
+.btn-rounded
+  border-radius: 50px
+  padding-left: 15px
+  padding-right: 15px
+
+.btn-outline-primary:not(.btn-rounded), .btn-primary
+  min-width: 100px
+
+a:not(.btn)
+  color: $color-glory
+
+.custom-control-checkbox
+  display: inline !important

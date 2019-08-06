@@ -1,0 +1,28 @@
+<%= form_with(model: shelf, local: true, html: { class: "horizontal-form" }) do |f| %>
+  <%= render 'shared/error_messages', model: shelf %>
+  <%= f.hidden_field :store_id, value: @store.id %>
+
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :row_count %>
+    <%= f.number_field :row_count, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :col_count %>
+    <%= f.number_field :col_count, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= link_to '戻る', shelves_path(store_id: store_id) %>
+    <% if request.path_info == new_shelf_path || request.path_info == shelves_path %>
+      <%= f.submit '追加', class: "btn btn-rounded btn-primary" %>
+    <% else %>
+      <%= f.submit '更新', class: "btn btn-rounded btn-primary" %>
+    <% end %>
+  </div>
+<% end %>

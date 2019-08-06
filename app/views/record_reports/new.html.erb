@@ -1,0 +1,7 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to "出退勤管理レポート", record_reports_path(store_id: @store.id) %></li>
+  <li class="breadcrumb-item active" aria-current="page">新規追加</li>
+</ol>
+
+<%= render 'form', record_report: @record_report, store_id: @store.id %>

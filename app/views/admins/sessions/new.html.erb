@@ -1,0 +1,38 @@
+<div class="row justify-content-center">
+  <div class="card admin-login-card admin-login">
+    <div class="card-body">
+
+      <!-- Logo -->
+      <div class="logo">
+        <%= image_tag "logo_01.png" %>
+      </div>
+
+      <!-- Form -->
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="form-group">
+          <%= f.text_field :staff_id, placeholder: "ユーザーIDを入力", autofocus: true, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.password_field :password, placeholder: "パスワードを入力", class: "form-control" %>
+        </div>
+      
+        <% if devise_mapping.rememberable? %>
+          <div class="form-group">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me, "ログイン状態を維持する" %>
+          </div>
+        <% end %>
+      
+        <div class="actions">
+          <%= f.submit "ログイン", disabled: true, class: "btn btn-rounded btn-primary" %>
+        </div>
+      <% end %>
+
+      <!-- Flash message -->
+      <%= render "layouts/flash_message" %>
+
+    </div>
+  </div>
+</div>
+

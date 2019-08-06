@@ -1,0 +1,121 @@
+<%= form_with model: stock, local: true, html: {class: "horizontal-form"} do |f| %>
+  <%= render 'shared/error_messages', model: stock %>
+
+  <%= f.hidden_field :store_id, value: store_id %>
+  <div class="form-group">
+    <%= f.hidden_field :product_id, {class: 'target_input'} %>
+  </div>
+
+  <%= f.fields_for :product do |pf| %>
+    <div class="form-group">
+      <%= pf.label :name, "商品名" %>
+      <%= pf.text_field :name, {class: 'form-control item_name', value: stock&.product&.name} %>
+    </div>
+
+    <div class="form-group">
+      <%= pf.label :jan_code, "JANコード" %>
+      <%= pf.text_field :jan_code, {class: 'form-control item_code', value: stock&.product&.jan_code} %>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :stock_count %>
+    <%= f.text_field :stock_count, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :price %>
+    <%= f.text_field :price, class: 'form-control' %>
+  </div>
+
+  <ul id="item_name_list" class="item_list"></ul>
+
+  <ul id="item_code_list" class="item_list"></ul>
+
+  <div class="actions">
+    <%= link_to '戻る', stocks_path(store_id: store_id) %>
+    <% if request.path_info == new_stock_path || request.path_info == stocks_path %>
+      <%= f.submit '追加', class: "btn btn-rounded btn-primary" %>
+    <% else %>
+      <%= f.submit '更新', class: "btn btn-rounded btn-primary" %>
+    <% end %>
+  </div>
+<% end %>
+
+<!--# TODO: make it together with 14-2 and put it into assets-->
+<script>
+    $(document).ready(function () {
+        $('.item_name').keyup(function () {
+            $('.currentEditName').removeClass('currentEditName');
+            $(this).addClass('currentEditName');
+            var target = $(this);
+            $.ajax({
+                url: '/stocks/search_by_name',
+                method: 'get',
+                data: {name: target.val()},
+                success: function (data) {
+                    var result = '';
+                    for (var i = 0; i < data.length; i++) {
+                        var item = data[i];
+                        result += '<li item-id="' + item['id'] + '" item-name="' + item['name'] + '" item-code="' + item['jan_code'] + '">' + item['name'] + '</li>';
+                    }
+                    $('#item_name_list').html(result).show()
+                        .css({
+                            left: target.offset().left,
+                            top: target.offset().top + target.height(),
+                        });
+                    $('#item_code_list').hide();
+                }
+            })
+        }).blur(function () {
+            $('#item_name_list').hide();
+        });
+        $('#item_name_list').mouseenter(function () {
+            $('.currentEditName').unbind('blur');
+            // $(this).focus();
+        }).blur(function () {
+            $(this).hide();
+        });
+        $(document).on('click', '#item_name_list li', function () {
+            $('.currentEditName').val($(this).attr('item-name')).parents('form').find('.item_code').val($(this).attr('item-code'));
+            $('#stock_product_id').val($(this).attr('item-id'));
+            $('#item_name_list').hide();
+        });
+        $('.item_code').keyup(function () {
+            $('.currentEditCode').removeClass('currentEditCode');
+            $(this).addClass('currentEditCode');
+            var target = $(this);
+            $.ajax({
+                url: '/stocks/search_by_code',
+                method: 'get',
+                data: {code: target.val()},
+                success: function (data) {
+                    var result = '';
+                    for (var i = 0; i < data.length; i++) {
+                        var item = data[i];
+                        result += '<li item-id="' + item['id'] + '" item-name="' + item['name'] + '" item-code="' + item['jan_code'] + '">' + item['jan_code'] + '</li>';
+                    }
+                    $('#item_code_list').html(result).show()
+                        .css({
+                            left: target.offset().left,
+                            top: target.offset().top + target.height(),
+                        });
+                    $('#item_name_list').hide();
+                }
+            })
+        }).blur(function () {
+            $('#item_code_list').hide();
+        });
+        $('#item_code_list').mouseenter(function () {
+            $('.currentEditCode').unbind('blur');
+            // $(this).focus();
+        }).blur(function () {
+            $(this).hide();
+        });
+        $(document).on('click', '#item_code_list li', function () {
+            $('.currentEditCode').val($(this).attr('item-code')).parents('form').find('.item_name').val($(this).attr('item-name'));
+            $('#stock_product_id').val($(this).attr('item-id'));
+            $('#item_code_list').hide();
+        });
+    })
+</script>

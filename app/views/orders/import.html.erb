@@ -1,0 +1,25 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to "検品データ管理", orders_path(store_id: @store.id) %></li>
+  <li class="breadcrumb-item active" aria-current="page">インポート</li>
+</ol>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<%= form_tag({controller: "orders", action: "csv_import", method: "post"}, {class: "horizontal-form", multipart: true}) do%>
+  <%= hidden_field_tag :store_id, @store.id %>
+
+  <div class="form-group">
+    <%= label_tag "輸入" %>
+    <%= file_field_tag :file %>
+  </div>
+
+  <div class="actions">
+    <%= link_to '戻る', orders_path(store_id: @store.id) %>
+    <%= button_tag type: :submit, class: "btn btn-icon btn-outline-primary" do %>
+      <i class="material-icons">present_to_all</i>
+      <span>インポート</span>
+    <% end %>
+  </div>
+<% end %>

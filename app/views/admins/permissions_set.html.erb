@@ -1,0 +1,279 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to "管理ユーザー一覧", admins_path %></li>
+  <li class="breadcrumb-item active" aria-current="page">機能権限管理</li>
+</ol>
+
+<section class="top-info">
+  <span>ユーザーID: <%= @admin.staff_id %></span>
+  <span>名前: <%= @admin.full_name %></span>
+</section>
+
+<!--# TODO: change the format-->
+<%= form_for @admin, url: permissions_update_admin_path, html: { class: "permissions-form" } do |f| %>
+  <div class="form-group">
+    <%= f.label '権限設定' %>
+  </div>
+
+  <div class="form-group custom-control custom-radio">
+    <%= f.radio_button :system_admin, true, class: "custom-control-input" %>
+    <%= f.label :system_admin, 'システム管理者', value: true, class: "custom-control-label" %>
+  </div>
+
+  <div class="form-group custom-control custom-radio">
+    <%= f.radio_button :system_admin, false, class: "custom-control-input" %>
+    <%= f.label :system_admin, '店舗管理者', value: false, class: "custom-control-label" %>
+  </div>
+
+  <div id="admin_perm" style="<%= @admin.system_admin ? '' : 'display:none' %>">
+    <div>
+      <span>システム管理権限</span>
+      <!-- clear 'onclick: 'return false;' -->
+
+      <!-- 管理ユーザー管理 -->
+      <div class="custom-control custom-checkbox">
+        <%= check_box_tag 'admin[permissions][Admin][manage]', 'manage', (@ability.can? :manage, Admin),
+                          {id: 'admin_manage', name: 'admin[permissions][Admin][]', class: 'adminPerm custom-control-input'} %>
+        <label for="admin_manage" class="custom-control-label">管理ユーザー管理</label>
+      </div>
+
+      <!-- エリアデータ管理 -->
+      <div class="custom-control custom-checkbox">
+        <%= check_box_tag 'admin[permissions][Area][manage]', 'manage', (@ability.can? :manage, Area),
+                          {id: 'area_manage', name: 'admin[permissions][Area][]', class: 'adminPerm custom-control-input'} %>
+        <label for="area_manage" class="custom-control-label">エリア管理</label>
+      </div>
+
+      <!-- 店舗データ管理 -->
+      <div class="custom-control custom-checkbox">
+        <%= check_box_tag 'admin[permissions][Store][manage]', 'manage', (@ability.can? :manage, Store),
+                          {id: 'store_manage', name: 'admin[permissions][Store][]', class: 'adminPerm custom-control-input'} %>
+        <label for="store_manage" class="custom-control-label">店舗データ管理</label>
+      </div>
+
+      <!-- 商品データ管理 -->
+      <div class="custom-control custom-checkbox">
+        <%= check_box_tag 'admin[permissions][Product][manage]', 'manage', (@ability.can? :manage, Product),
+                          {id: 'product_manage', name: 'admin[permissions][Product][]', class: 'adminPerm custom-control-input'} %>
+        <label for="product_manage" class="custom-control-label">商品データ管理</label>
+      </div>
+
+      <!-- 取引先データ管理 -->
+      <div class="custom-control custom-checkbox">
+        <%= check_box_tag 'admin[permissions][Supplier][manage]', 'manage', (@ability.can? :manage, Supplier),
+                          {id: 'supplier_manage', name: 'admin[permissions][Supplier][]', class: 'adminPerm custom-control-input'} %>
+        <label for="supplier_manage" class="custom-control-label">取引先データ管理</label>
+      </div>
+
+    </div>
+  </div>
+
+  <p></p>
+  <div>各機能利用権限設定</div>
+  <table id="permissionTable" class="table table-bordered permission-table">
+
+    <thead>
+      <td>機能権限</td>
+      <td>
+        <div class="custom-control custom-checkbox">
+          <%= check_box_tag 'total_onlyread', 'update', false, {id: 'update_all', class: "custom-control-input"} %>
+          <label for="update_all" class="custom-control-label">更新権限</label>
+        </div>
+      </td>
+      <td>
+        <div class="custom-control custom-checkbox">
+          <%= check_box_tag 'total_onlyread', 'onlyread', false, {id: 'onlyread_all', class: "custom-control-input"} %>
+          <label for="onlyread_all" class="custom-control-label">参照権限</label>
+        </div>
+      </td>
+    </thead>
+
+    <tbody>
+
+      <tr>
+        <td>アプリユーザー管理</td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][User][update]', 'update', (@ability.can? :update, User),
+                              {id: 'user_update', name: 'admin[permissions][User][]', class: 'update custom-control-input'} %>
+            <label for="user_update" class="custom-control-label"></label>
+          </div>
+        </td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][User][onlyread]', 'onlyread', (@ability.can? :read, User),
+                              {id: 'user_only_read', name: 'admin[permissions][User][]', class: 'onlyread custom-control-input'} %>
+            <label for="user_only_read" class="custom-control-label"></label>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>出退勤管理レポート</td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][RecordReport][update]', 'update', (@ability.can? :update, RecordReport),
+                              {id: 'record_report_update', name: 'admin[permissions][RecordReport][]', class: 'update custom-control-input'} %>
+            <label for="record_report_update" class="custom-control-label"></label>
+          </div>
+        </td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][RecordReport][onlyread]', 'onlyread', (@ability.can? :read, RecordReport),
+                              {id: 'record_report_only_read', name: 'admin[permissions][RecordReport][]', class: 'onlyread custom-control-input'} %>
+            <label for="record_report_only_read" class="custom-control-label"></label>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>グループ管理</td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][MessageGroup][update]', 'update', (@ability.can? :update, MessageGroup),
+                              {id: 'message_group_update', name: 'admin[permissions][MessageGroup][]', class: 'update custom-control-input'} %>
+            <label for="message_group_update" class="custom-control-label"></label>
+          </div>
+        </td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][MessageGroup][onlyread]', 'onlyread', (@ability.can? :read, MessageGroup),
+                              {id: 'message_group_only_read', name: 'admin[permissions][MessageGroup][]', class: 'onlyread custom-control-input'} %>
+            <label for="message_group_only_read" class="custom-control-label"></label>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>端末管理</td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Device][update]', 'update', (@ability.can? :update, Device),
+                              {id: 'device_update', name: 'admin[permissions][Device][]', class: 'update custom-control-input'} %>
+            <label for="device_update" class="custom-control-label"></label>
+          </div>
+        </td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Device][onlyread]', 'onlyread', (@ability.can? :read, Device),
+                              {id: 'device_only_read', name: 'admin[permissions][Device][]', class: 'onlyread custom-control-input'} %>
+            <label for="device_only_read" class="custom-control-label"></label>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>電話帳管理</td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Adrsbook][update]', 'update', (@ability.can? :update, Adrsbook),
+                              {id: 'adrsbook_update', name: 'admin[permissions][Adrsbook][]', class: 'update custom-control-input'} %>
+            <label for="adrsbook_update" class="custom-control-label"></label>
+          </div>
+        </td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Adrsbook][onlyread]', 'onlyread', (@ability.can? :read, Adrsbook),
+                              {id: 'adrsbook_only_read', name: 'admin[permissions][Adrsbook][]', class: 'onlyread custom-control-input'} %>
+            <label for="adrsbook_only_read" class="custom-control-label"></label>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>検品管理</td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Inspection][update]', 'update', (@ability.can? :update, Inspection),
+                              {id: 'inspection_update', name: 'admin[permissions][Inspection][]', class: 'update custom-control-input'} %>
+            <label for="inspection_update" class="custom-control-label"></label>
+          </div>
+        </td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Inspection][onlyread]', 'onlyread', (@ability.can? :read, Inspection),
+                              {id: 'inspection_only_read', name: 'admin[permissions][Inspection][]', class: 'onlyread custom-control-input'} %>
+            <label for="inspection_only_read" class="custom-control-label"></label>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>検品データ管理</td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Order][update]', 'update', (@ability.can? :update, Order),
+              { id: "order_update", name: 'admin[permissions][Order][]', class: 'update custom-control-input'} %>
+            <label for="order_update" class="custom-control-label"></label>
+          </div>
+        </td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Order][onlyread]', 'onlyread', (@ability.can? :read, Order),
+              { id: "order_only_read", name: 'admin[permissions][Order][]', class: 'onlyread custom-control-input'} %>
+            <label for="order_only_read" class="custom-control-label"></label>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>棚卸管理</td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Inventory][update]', 'update', (@ability.can? :update, Inventory),
+              { id: "inventory_update", name: 'admin[permissions][Inventory][]', class: 'update custom-control-input'} %>
+            <label for="inventory_update" class="custom-control-label"></label>
+          </div>
+        </td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Inventory][onlyread]', 'onlyread', (@ability.can? :read, Inventory),
+              { id: "inventory_only_read", name: 'admin[permissions][Inventory][]', class: 'onlyread custom-control-input'} %>
+            <label for="inventory_only_read" class="custom-control-label"></label>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>在庫データ管理</td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Stock][update]', 'update', (@ability.can? :update, Stock),
+              { id: "stock_update", name: 'admin[permissions][Stock][]', class: 'update custom-control-input'} %>
+            <label for="stock_update" class="custom-control-label"></label>
+          </div>
+        </td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Stock][onlyread]', 'onlyread', (@ability.can? :read, Stock),
+              { id: "stock_only_read", name: 'admin[permissions][Stock][]', class: 'onlyread custom-control-input'} %>
+            <label for="stock_only_read" class="custom-control-label"></label>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>棚データ管理</td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Shelf][update]', 'update', (@ability.can? :update, Shelf),
+              { id: "shelf_update", name: 'admin[permissions][Shelf][]', class: 'update custom-control-input'} %>
+            <label for="shelf_update" class="custom-control-label"></label>
+          </div>
+        </td>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_tag 'admin[permissions][Shelf][onlyread]', 'onlyread', (@ability.can? :read, Shelf),
+              { id: "shelf_only_read", name: 'admin[permissions][Shelf][]', class: 'onlyread custom-control-input'} %>
+            <label for="shelf_only_read" class="custom-control-label"></label>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="actions">
+    <%= link_to "戻る", admins_path %>
+    <%= f.submit "設定", class: "btn btn-rounded btn-primary" %>
+  </div>
+<% end %>

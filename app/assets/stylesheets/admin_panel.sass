@@ -1,0 +1,339 @@
+$color-glory: #BF0B0B
+$color-gray: #ebeef1
+$color-aside-background: #F1F3F3
+$color-aside-text: #a4a4a4
+
+// Aside menu
+#menuButton
+  padding: 5px
+  float: left
+  display: block
+  height: 35px
+  width: 35px
+  color: black
+  position: absolute
+  left: 0
+  top: 0
+  background: $color-aside-background
+  &:hover
+    color: $color-glory
+
+aside#asideMenu
+  display: block
+  left: 10px
+  background: $color-aside-background
+  width: 200px
+  min-height: 100vh
+  float: left
+  ul
+    padding-left: 0
+    li
+      list-style: none
+      padding: 20px 0 20px 20px
+      &:hover
+        background: #CCCCCC
+      &.active
+        border-left: 5px solid $color-glory
+        padding-left: 15px
+        color: $color-glory
+    a
+      color: $color-aside-text
+      &:hover
+        text-decoration: none
+        li
+          border-left: 5px solid #E8415F
+          padding-left: 15px
+  details
+    background: #FFFFFF
+    color: $color-aside-text
+    vertical-align: middle
+    summary::-webkit-details-marker
+      float: right
+      margin-top: 5px
+  details.prefectures-list
+    padding: 20px 0 20px 40px
+    &:hover
+  details.areas-list
+    padding: 20px 0 20px 20px
+  .stores-list
+    padding: 20px 0 20px 20px
+    a
+      color: $color-aside-text
+    .active
+      color: $color-glory
+.li-select-store
+  padding: 15px 0 15px 20px !important
+
+// Main
+main
+  padding-top: 20px
+  padding-left: 20px
+  padding-right: 20px
+  width: auto
+  overflow: hidden
+  position: relative
+
+// Nav
+nav
+  .navbar-brand
+    img
+      height: 50px
+  border-bottom: 2px solid #EEEEEE !important
+  .btn
+    width: 100px
+
+.admin-login-card
+  width: 300px
+  border: none
+  .card-body
+    .btn
+      width: 100px
+    .logo
+      text-align: center
+      img
+        width: 100%
+        max-width: 250px
+    form
+      .actions
+        text-align: center
+        margin-top: 30px
+        margin-bottom: 50px
+
+.breadcrumb
+  background: none
+  .breadcrumb-item + .breadcrumb-item
+    &:before
+      content: ">"
+  a
+    color: #000000
+
+.top-group-menu
+  margin-bottom: 40px
+  width: 100%
+  text-align: center
+
+.top-info
+  display: table
+  margin-bottom: 40px
+  span
+    float: left
+    margin-right: 30px
+
+.top-link
+  text-align: right
+  margin-bottom: 40px
+  a
+    margin-left: 40px
+
+.search-form
+  position: relative
+  padding-bottom: 20px
+  margin-bottom: 40px
+  border-bottom: 2px solid $color-gray
+  .form-group
+    label
+      height: 25px
+      display: block
+    input
+      width: 150px
+    select
+      width: 180px
+    float: left
+    display: block
+    margin-right: 20px
+  .two-date-field
+    width: max-content
+    input
+      float: left
+    span
+      float: left
+      margin: 5px 15px 0 15px
+  .actions
+    .btn
+      margin-top: 32px
+      margin-right: 20px
+  .switchs
+    position: absolute
+    bottom: 15px
+    right: 0
+
+.page-pagination ul
+    padding-bottom: 20px
+    margin-bottom: 40px
+    border-bottom: 2px solid $color-gray
+
+// Form errors
+#error_explanation
+  color: $color-glory
+
+.field_with_errors
+  input, textarea
+    @import bootstrap
+    @extend .is-invalid
+  display: inline
+
+// Common form style
+.manage-form
+  .form-group
+    label
+      margin-top: 8px
+  .actions
+    display: block
+    clear: both
+    margin-top: 50px
+    text-align: center
+    a
+      margin-right: 40px
+
+.horizontal-form
+  @extend .manage-form
+  width: 450px
+  margin: auto
+  .form-group
+    label
+      width: 200px
+      float: left
+    input, select
+      width: 250px
+  .actions
+    margin-left: 200px
+    width: 250px
+
+// User form
+.user-form
+  @extend .manage-form
+  width: 600px
+  margin-left: 50px
+  .form-group
+    label
+      width: 150px
+      float: left
+    input
+      width: 450px
+  .user-last-name
+    float: left
+    input
+      width: 170px
+  .user-first-name
+    float: right
+    label
+      width: 50px !important
+    input
+      width: 170px
+      float: right
+  .user-department
+    input
+      width: 170px
+  .actions
+    margin-left: 150px
+
+.record-report-form
+  @extend .horizontal-form
+  .form-group
+    select
+      width: 100px
+      display: inline
+      &:first-of-type
+        margin-right: 20px
+      &:last-of-type
+        float: right
+
+// Permission form
+.permissions-common-form
+  .form-group
+    display: inline
+    margin-right: 20px
+  input[type="checkbox"]
+  .custom-control
+    margin-left: 20px
+    margin-right: 0
+    label
+      margin-left: 0
+  .actions
+    text-align: center
+    a
+      margin-right: 50px
+  table.permission-table
+    margin-top: 10px
+    th, td
+      height: 50px
+      text-align: center
+      vertical-align: middle
+
+.permissions-form
+  @extend .permissions-common-form
+  .actions
+    width: 600px
+  table.permission-table
+    width: 600px
+  #admin_perm
+    display: block
+    clear: both
+    overflow: hidden
+    span:first-of-type
+      float: left
+    .custom-control
+      float: left
+
+.store-permissions-form
+  @extend .permissions-common-form
+  th, td
+    width: 150px
+    justify-content: center
+    .custom-control
+      margin-left: 0
+  .actions
+    width: 750px
+  table.permission-table
+    width: 750px
+
+// Order form
+.order-form
+  @extend .manage-form
+  .order-number
+    label
+      float: left
+      margin-right: 5px
+    input
+      width: 200px
+  h2
+    display: block
+    clear: both
+  .add-product
+    display: block
+    clear: both
+  .nested-fields
+    .form-group
+      width: 170px
+      float: left
+      margin-right: 5px
+    .delete
+      width: 100px
+      margin-top: 40px
+    display: block
+    clear: both
+
+// Table list
+table.table-list
+  thead
+    th
+      border-top: none !important
+      border-bottom: none !important
+      font-weight: normal
+  th, td
+    text-align: left
+  tr
+    &:first-child
+      td
+        border-top: none
+    &:last-child
+      td
+        border-bottom: 1px solid $color-gray
+    padding-top: 25px
+    padding-bottom: 25px
+  td
+    vertical-align: middle
+  tbody
+    td.edit, td.delete
+      width: 100px !important
+

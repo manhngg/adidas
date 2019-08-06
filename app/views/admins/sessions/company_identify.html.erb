@@ -1,0 +1,23 @@
+<div class="row justify-content-center">
+  <div class="card admin-login-card company-identify">
+    <div class="card-body">
+
+      <!-- Logo -->
+      <div class="logo">
+        <%= image_tag "logo_01.png" %>
+      </div>
+
+      <!-- Form -->
+      <%= form_tag company_identify_action_path do %>
+        <%= text_field_tag :company_id, nil, placeholder: "法人IDを入力", autofocus: true, class: "form-control" %>
+        <div class="actions">
+          <%= submit_tag "次へ", disabled: true, class: "btn btn-rounded btn-primary" %>
+        </div>
+      <% end %>
+
+      <!-- Flash message -->
+      <%= render "layouts/flash_message" %>
+
+    </div>
+  </div>
+</div>

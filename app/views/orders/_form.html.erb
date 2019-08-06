@@ -1,0 +1,30 @@
+<%= form_for(order, html: { class: "order-form" }) do |f| %>
+  <%= render 'shared/error_messages', model: order %>
+  <%= hidden_field_tag :store_id, @store.id %>
+
+  <div class="form-group order-number">
+    <%= f.label "発注NO" %>
+    <%= f.text_field :order_number, class: "form-control" %>
+  </div>
+
+  <h2>商品詳細</h2>
+  <div>
+    <%= f.fields_for :order_items, @order_items do |order_item_form| %>
+      <%= render "order_item_fields", f: order_item_form %>
+    <% end %>
+    <div class="add-product">
+      <%= link_to_add_association '商品追加', f, :order_items, class: "btn btn-sm btn-rounded btn-primary" %>
+    </div>
+    <ul id="item_name_list" class="item_list"></ul>
+    <ul id="item_code_list" class="item_list"></ul>
+  </div>
+
+  <div class="actions">
+    <%= link_to '戻る', orders_path(store_id: @store.id) %>
+    <% if request.path_info == new_order_path || request.path_info == orders_path %>
+      <%= f.submit '追加', class: "btn btn-rounded btn-primary" %>
+    <% else %>
+      <%= f.submit '更新', class: "btn btn-rounded btn-primary" %>
+    <% end %>
+  </div>
+<% end %>

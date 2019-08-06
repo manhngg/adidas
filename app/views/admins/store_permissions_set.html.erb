@@ -1,0 +1,86 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to "管理ユーザー一覧", admins_path %></li>
+  <li class="breadcrumb-item active" aria-current="page">店舗権限管理</li>
+</ol>
+
+<section class="top-info">
+  <span>ユーザーID: <%= @admin.staff_id %></span>
+  <span>名前: <%= @admin.full_name %></span>
+</section>
+
+<section class="search-form">
+  <%= search_form_for(@q, url: store_permissions_set_admin_path, method: :get) do |f| %>
+
+    <div class="form-group">
+      <%= f.label '都道府県' %>
+      <%= f.collection_select :prefecture_id_eq, Prefecture.all, :id, :name, {}, {include_blank: true, class: "form-control"} %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label 'エリア' %>
+      <%= render 'stores/search_area', prefecture_id: Prefecture.first.id %>
+    </div>
+
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        <span>検索</span>
+      <% end %>
+    </div>
+
+  <% end %>
+</section>
+
+<%= form_for @admin, url: store_permissions_update_admin_path, html: { class: "store-permissions-form" } do |f| %>
+  <table id="permissionTable" class="table table-bordered permission-table">
+    <thead>
+      <th>都道府県</th>
+      <th>エリア</th>
+      <th>店舗名</th>
+      <th>
+        <div class="custom-control custom-checkbox">
+          <%= check_box_tag 'total_onlyread', 'update', false, {id: 'update_all', class: "custom-control-input"} %>
+          <label for="update_all" class="custom-control-label">更新権限</label>
+        </div>
+      </th>
+      <th>
+        <div class="custom-control custom-checkbox">
+          <%= check_box_tag 'total_onlyread', 'onlyread', false, {id: 'onlyread_all', class: "custom-control-input"} %>
+          <label for="onlyread_all" class="custom-control-label">参照権限</label>
+        </div>
+      </th>
+    </thead>
+    <tbody>
+      <% @stores.each do |store| %>
+        <tr>
+          <td><%= store.prefecture_name %></td>
+          <td><%= store.area_name %></td>
+          <td><%= store.name %></td>
+          <td>
+            <div class="custom-control custom-checkbox">
+              <%= hidden_field_tag "stores[#{store.id}][update]", "0" %>
+              <%= check_box_tag "stores[#{store.id}][update]", "1", (@ability.can? :update, store), 
+                {id: "#{store.id}_update", class: 'update custom-control-input'} %>
+              <label for="<%= store.id %>_update" class="custom-control-label"></label>
+            </div>
+          </td>
+          <td>
+            <div class="custom-control custom-checkbox">
+              <%= hidden_field_tag "stores[#{store.id}][onlyread]", "0" %>
+              <%= check_box_tag "stores[#{store.id}][onlyread]", "1", (@ability.can? :read, store), 
+                {id: "#{store.id}_onlyread", class: 'onlyread custom-control-input'} %>
+              <label for="<%= store.id %>_onlyread" class="custom-control-label"></label>
+            </div>
+          </td>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="actions">
+    <%= link_to "戻る", admins_path %>
+    <%= f.submit "設定", class: "btn btn-rounded btn-primary" %>
+  </div>
+<% end %>

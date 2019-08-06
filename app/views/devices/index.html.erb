@@ -1,0 +1,71 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active" aria-current="page">端末管理</li>
+</ol>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<!-- Top link -->
+<section class="top-link">
+  <%= link_to '端末管理番号発行', new_device_path(store_id: @store.id) %>
+</section>
+
+<!-- Search form -->
+<section class="search-form">
+  <%= form_tag(devices_path, method: :get) do %>
+    <%= hidden_field_tag :store_id, @store.id %>
+
+    <div class="form-group">
+      <label>表示名</label>
+      <%= text_field_tag :search_name, params[:search_name], class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <label>端末管理番号</label>
+      <%= text_field_tag :search_number, params[:search_number], class: "form-control" %>
+    </div>
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        検索
+      <% end %>
+    </div>
+
+  <% end %>
+</section>
+
+<!-- Pagination -->
+<section class="page-pagination">
+  <%= paginate @devices %>
+</section>
+
+<!-- Table list -->
+<section>
+  <table class="table table-list ">
+    <thead>
+      <th>表示名</th>
+      <th>端末管理番号</th>
+      <th>パスワード</th>
+      <th>使用済み</th>
+      <th></th>
+      <th></th>
+    </thead>
+    <tbody>
+      <% @devices.each do |device| %>
+        <tr>
+          <td><%= device.name %> </td>
+          <td><%= device.number %> </td>
+          <!-- <td><%= device.encrypted_password %> </td> -->
+          <td>******</td>
+          <td><%= device.registered %> </td>
+          <td class="edit"><%= link_to '編集', edit_device_path(device, store_id: @store.id), class: "btn btn-sm btn-rounded btn-outline-primary" %></td>
+          <td class="delete">
+            <%= render "shared/modal_destroy", object_name: "#{device.name}", object: device,
+              path: device_path(device, store_id: @store.id) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

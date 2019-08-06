@@ -1,0 +1,2 @@
+class OrderItemsController < BaseController
+end

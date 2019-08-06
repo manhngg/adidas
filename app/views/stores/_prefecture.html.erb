@@ -1,0 +1,8 @@
+<% if request.path_info == new_store_path || request.path_info == stores_path || request.path_info == prefs_select_stores_path %>
+  <%= collection_select :store, :prefecture_id, Prefecture.where(region_id: region_id),
+    :id, :name, {}, {include_blank: true, class: "form-control"} %>
+<% else %>
+  <% p request.path_info %>
+  <%= collection_select :store, :prefecture_id, Prefecture.where(region_id: region_id),
+    :id, :name, {}, {selected: @store.prefecture.id, include_blank: true, class: "form-control"} %>
+<% end %>

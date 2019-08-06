@@ -1,0 +1,95 @@
+<!-- Top group menu -->
+<section class="top-group-menu">
+  <div class="btn-group" role="group">
+    <%= link_to "検品結果一覧表示", inspections_path(store_id: @store.id), class: "btn btn-primary" %>
+    <%= link_to "仕入検品エラーリスト表示", inspection_errors_path(store_id: @store.id), class: "btn btn-secondary" %>
+  </div>
+</section>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<!-- Search form -->
+<section class="search-form">
+  <%= search_form_for(@q, url: inspections_path, html: {method: :get}) do |f| %>
+    <%= hidden_field_tag :store_id, @store.id %>
+
+    <div class="form-group">
+      <%= f.label '発注NO' %>
+      <%= f.text_field :order_number_cont, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label '取引先名' %>
+      <%= f.text_field :supplier_name_cont, class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        <span>検索</span>
+      <% end %>
+
+      <%= button_tag type: :submit, name: 'export_csv', class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">present_to_all</i>
+        <span>CSV出力</span>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="switchs inspection-switchs">
+    <div class="custom-control custom-switch">
+      <input type="checkbox" id="showOnlyUnmatchedInspection" class="custom-control-input" checked>
+      <label class="custom-control-label" for="showOnlyUnmatchedInspection">検品数が不一致のみ表示</label>
+    </div>
+    <div class="custom-control custom-switch">
+      <input type="checkbox" id="showFinishedInspection" class="custom-control-input">
+      <label class="custom-control-label" for="showFinishedInspection">完了済み発注も表示</label>
+    </div>
+  </div>
+</section>
+
+<!-- Pagination -->
+<section class="page-pagination">
+  <%= paginate @orders %>
+</section>
+
+<table class="table table-list ">
+  <thead>
+    <tr>
+      <th>発注NO</th>
+      <th>取引先名</th>
+      <th>納品予定日</th>
+      <th>納品予定数</th>
+      <th>検品数</th>
+      <th>最終検品日</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders.includes(:supplier).each do |order| %>
+      <% if order.order_count == order.inspection_count %>
+        <% matched = "matched" %>
+        <% display = "none" %>
+      <% end %>
+      <% if order.finished? %>
+        <% finished = "finished" %>
+        <% display = "none" %>
+      <% end %>
+      <tr class="<%= matched %> <%= finished %>" style="display: <%= display %>">
+<!--        # TODO: date format-->
+        <td><%= order.order_number %> </td>
+        <td><%= order.supplier.name %> </td>
+        <td><%= order.order_date.to_date %> </td>
+        <td><%= order.order_count %> </td>
+        <td><%= order.inspection_count %> </td>
+        <td><%= order.last_inspection.to_date %> </td>
+        <td class="edit"><%= link_to '詳細', inspection_path(order, store_id: @store.id),
+          class: "btn btn-sm btn-rounded btn-outline-primary" %></td>
+        <td><%= link_to '完了', finished_status_inspection_path(order, store_id: @store.id),
+          class: "btn btn-sm btn-rounded btn-outline-primary", disabled: false unless order.finished? %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

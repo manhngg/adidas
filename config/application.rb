@@ -8,8 +8,6 @@ require "active_record/railtie"
 require "active_storage/engine"
 require "action_controller/railtie"
 require "action_mailer/railtie"
-require "action_mailbox/engine"
-require "action_text/engine"
 require "action_view/railtie"
 require "action_cable/engine"
 require "sprockets/railtie"
@@ -19,10 +17,10 @@ require "sprockets/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Adidas
+module GLORYCcApiWeb
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 5.2
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -31,5 +29,14 @@ module Adidas
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.i18n.load_path += Dir[Rails.root.join("locales", "*.{rb, yml}").to_s]
+    # Set default locale to Japanese
+    config.i18n.locale = :ja
+    config.i18n.default_locale = :ja
+
+    # Change timezone to Japan
+    config.time_zone = 'Tokyo'
+    config.active_record.default_timezone = :local
   end
 end

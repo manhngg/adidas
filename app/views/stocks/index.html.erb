@@ -1,0 +1,70 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active" aria-current="page">在庫データ管理</li>
+</ol>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<!-- Top link -->
+<section class="top-link">
+  <%= link_to '新規追加', new_stock_path(store_id: @store.id) %>
+  <%= link_to '一括インポート', import_stocks_path(store_id: @store.id) %>
+</section>
+
+<!-- Search form -->
+<section class="search-form">
+  <%= search_form_for(@q, url: stocks_path, html: {method: :get}) do |f| %>
+    <%= hidden_field_tag :store_id, @store.id %>
+
+    <div class="form-group">
+      <%= f.label '商品名' %>
+      <%= f.text_field :product_name_cont, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label 'JANコード' %>
+      <%= f.text_field :product_jan_code_cont, class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        検索
+      <% end %>
+    </div>
+  <% end %>
+</section>
+
+<!-- Pagination -->
+<section class="page-pagination">
+  <%= paginate @stocks %>
+</section>
+
+<table class="table table-list ">
+  <thead>
+    <tr>
+      <th>商品名</th>
+      <th>JANコード</th>
+      <th>在庫数</th>
+      <th>評価額</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @stocks.each do |stock| %>
+      <tr>
+        <td><%= stock.product.name %> </td>
+        <td><%= stock.product.jan_code %> </td>
+        <td><%= stock.stock_count %> </td>
+        <td><%= stock.price %> </td>
+        <td class="edit"><%= link_to '編集', edit_stock_path(stock, store_id: @store.id), class: "btn btn-sm btn-rounded btn-outline-primary" %></td>
+        <td class="delete">
+          <%= render "shared/modal_destroy", object_name: "#{stock.product.name}", object: stock,
+            path: stock_path(stock, store_id: @store.id) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

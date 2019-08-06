@@ -1,0 +1,70 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active" aria-current="page">棚卸管理</li>
+</ol>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<!-- Top link -->
+<section class="top-link">
+  <%= link_to '新規追加', new_inventory_path(store_id: @store.id),
+    style: @inventories.exists?(status:[0,1]) ? "pointer-events:none" : "" %>
+</section>
+
+<!-- Search form -->
+<section class="search-form">
+  <%= search_form_for(@q, url: inventories_path, html: { method: :get }) do |f| %>
+    <%= f.hidden_field :store_id, value: @store.id %>
+
+    <div class="form-group two-date-field">
+      <%= f.label '棚卸開始日' %>
+      <%= f.date_field :start_time_gteq, oninvalid: "invalidDateMsg(this);", class: "form-control select-date" %>
+      <span>～</span>
+      <%= f.date_field :start_time_lteq, oninvalid: "invalidDateMsg(this);", class: "form-control select-date" %>
+    </div>
+
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        検索
+      <% end %>
+    </div>
+
+  <% end %>
+</section>
+
+<section class="page-pagination">
+  <%= paginate @inventories %>
+</section>
+
+<table class="table table-list ">
+  <thead>
+    <th>棚卸開始日</th>
+    <th>棚卸状態</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </thead>
+  <tbody>
+    <% @inventories.each do |inventory| %>
+      <tr>
+        <td><%= inventory.start_time.to_date if inventory.start_time.present? %> </td>
+        <td><%= inventory.status %> </td>
+        <td><%= link_to '状況表示', shelf_inventories_inventory_path(inventory, store_id: @store.id),
+          class: "btn btn-sm btn-rounded btn-outline-primary",
+          style: inventory.unstarted? ? "pointer-events:none" : "" %></td>
+        <td><%= link_to '実査照合', product_inventories_inventory_path(inventory, store_id: @store.id),
+          class: "btn btn-sm btn-rounded btn-outline-primary",
+          style: inventory.unstarted? ? "pointer-events:none" : "" %></td>
+        <td><%= link_to '確定', toggle_done_inventory_path(inventory, store_id: @store.id),
+          class: "btn btn-sm btn-rounded btn-outline-primary",
+          style: inventory.unstarted? || inventory.done? ? "pointer-events:none" : "" %></td>
+        <td><%= link_to 'エラー一覧', errors_inventory_path(inventory, store_id: @store.id),
+          class: "btn btn-sm btn-rounded btn-outline-primary",
+          style: inventory.unstarted? ? "pointer-events:none" : "" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

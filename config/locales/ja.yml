@@ -1,0 +1,125 @@
+ja:
+  activerecord:
+    models:
+      admin: "管理ユーザー"
+      user: "ユーザー"
+      supplier: "取引先"
+      adrsbook: "電話帳"
+      device: "端末"
+      inspection: "検品"
+      message_group: "掲示板グループ"
+      transceiver_group: "トランシーバグループ"
+      store: "店舗"
+      order_item: "発注商品"
+
+    attributes:
+      area:
+        region: "地域"
+        prefecture: "都道府県"
+        name: "名前"
+
+      store:
+        region: "地域"
+        prefecture: "都道府県"
+        area: "エリア"
+        name: "名前"
+
+      admin:
+        staff_id: "ユーザーID"
+        first_name: "名"
+        first_name_furigana: "メイ"
+        last_name: "姓"
+        last_name_furigana: "セイ"
+        password: "パスワード"
+        password_confirmation: "パスワード確認"
+
+      user:
+        staff_id: "ユーザーID"
+        first_name: "名"
+        first_name_furigana: "メイ"
+        last_name: "姓"
+        last_name_furigana: "セイ"
+        password: "パスワード"
+        password_confirmation: "パスワード確認"
+
+      device:
+        name: "名前"
+        encrypted_password: "パスワード"
+
+      adrsbook:
+        category: "分類"
+        adrsbook_subcategory: "詳細分類"
+        name: "名前"
+        furigana: "読み仮名"
+        tel1: "電話番号1"
+        tel2: "電話番号2"
+        tel3: "電話番号3"
+
+      adrsbook_subcategory:
+        name: "詳細分類名"
+
+      message_group:
+        name: "グループ名"
+
+      transceiver_group:
+        name: "グループ名"
+
+      supplier:
+        supplier_number: "取引先ID"
+        name: "取引先名"
+        furigana: "読み仮名"
+
+      product:
+        name: "商品名"
+        jan_code: "JANコード"
+
+      shelf:
+        name: "棚名"
+        row_count: "段数"
+        col_count: "列数"
+
+      order:
+        supplier: "取引先"
+        order_number: "発注ID"
+        order_items.order_count: "dfsdf"
+        order_items:
+          order_count: "dfsdf"
+        order_item:
+          order_count: "dfsdf"
+        order_items:
+          order_item_order_count: "dfsdf"
+        order_item:
+          order_item_order_count: "dfsdf"
+        order_item_order_count: "dfsdf"
+        order_items_order_count: "dfsdf"
+
+      order_items:
+        product: "発注商品"
+        supplier: "発注商品取引先"
+        order_count: "発注商品発注数"
+
+      stock:
+        product: "商品"
+        stock_count: "在庫数"
+        price: "単価"
+
+      inventory:
+        start_time: "棚卸開始日"
+
+      record_report:
+        user: "ユーザー"
+        record_date: "日付"
+        start_time: "出勤時刻"
+        stop_time: "退勤時刻"
+        break_time: "休憩時刻"
+
+  unauthorized:
+    manage:
+      all: "アクセス権限がありません"
+
+  flash:
+    create: "%{name}が作成されました"
+    update: "%{name}が更新されました"
+    destroy: "%{name}が削除されました"
+    csv_not_found: "インポートするCSVファイルを選択してください"
+    not_found: "%{name}が見つかりませんでした"

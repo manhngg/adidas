@@ -1,0 +1,24 @@
+<div class="aside-menu-stores" style="display: none">
+  <% if current_admin.system_admin %>
+    <% stores = Store.all %>
+  <% else %>
+    <% stores = Store.where(id: AdminManageStore.where(admin_id: current_admin.id, action: "update").pluck(:store_id)) %>
+  <% end %>
+  <% stores.group_by(&:prefecture_id).each do |prefecture_id, prefecture_stores| %>
+    <details class="prefectures-list">
+      <summary><%= Prefecture.find(prefecture_id).name %></summary>
+      <% prefecture_stores.group_by(&:area_id).each do |area_id, area_stores| %>
+        <details class="areas-list">
+          <summary><%= Area.find(area_id).name %></summary>
+          <% area_stores.each do |store| %>
+            <%= link_to eval("#{ctrl_name}_path(store_id: store.id)") do %>
+              <li class="li-select-store <%= is_active_controller_and_store(ctrl_name, store.id) %>">
+                <%= store.name %>
+              </li>
+            <% end %>
+          <% end %>
+        </details>
+      <% end %>
+    </details>
+  <% end %>
+</div>

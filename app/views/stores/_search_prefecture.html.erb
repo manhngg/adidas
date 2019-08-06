@@ -1,0 +1,2 @@
+<%= collection_select :q, :prefecture_id_eq, Prefecture.where(region_id: region_id),
+  :id, :name, {include_blank: "県を選択"}, class: "form-control" %>

@@ -1,0 +1,63 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active" aria-current="page">棚管理</li>
+</ol>
+
+<!-- Flash message -->
+<%= render "layouts/flash_message" %>
+
+<!-- Top link -->
+<section class="top-link">
+  <%= link_to '新規追加', new_shelf_path(store_id: @store.id) %>
+  <%= link_to '一括インポート', import_shelves_path(store_id: @store.id) %>
+</section>
+
+<!-- Search form -->
+<section class="search-form">
+  <%= form_tag(shelves_path, method: :get) do %>
+    <%= hidden_field_tag :store_id, @store.id %>
+
+    <div class="form-group">
+      <%= label_tag "棚名" %>
+      <%= search_field_tag :search_name, params[:search_name], class: "form-control" %>
+    </div>
+
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        検索
+      <% end %>
+    </div>
+  <% end %>
+</section>
+
+<!-- Pagination -->
+<section class="page-pagination">
+  <%= paginate @shelves %>
+</section>
+
+<table class="table table-list ">
+  <thead>
+    <tr>
+      <th>棚名</th>
+      <th>列数</th>
+      <th>段数</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @shelves.each do |shelf| %>
+      <tr>
+        <td><%= shelf.name %> </td>
+        <td><%= shelf.row_count %> </td>
+        <td><%= shelf.col_count %> </td>
+        <td class="edit"><%= link_to '編集', edit_shelf_path(shelf, store_id: @store.id), class: "btn btn-sm btn-rounded btn-outline-primary" %></td>
+        <td class="delete">
+          <%= render "shared/modal_destroy", object_name: "#{shelf.name}", object: shelf,
+            path: shelf_path(shelf, store_id: @store.id) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

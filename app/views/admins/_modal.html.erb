@@ -1,0 +1,180 @@
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">店舗選択</button>
+
+<select multiple="true" class="form-control" id="selectedStore" name="admin[store_ids][]"></select>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>  <!--# TODO: Add title if we have one-->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="prefecture">都道府県</label>
+          <select id="prefecture" class="select2"></select>
+        </div>
+        <div class="form-group">
+          <label for="area">エリア</label>
+          <select id="area" class="select2"></select>
+        </div>
+        <table id="modalTable">
+          <thead>
+          <tr>
+            <th>都道府県</th>
+            <th>エリア</th>
+            <th>店舗名</th>
+            <th>
+              <div class="custom-control-checkbox custom-control custom-checkbox">
+                <input type="checkbox" id="selectAll" class="custom-control-input" />
+                <label for="selectAll" class="custom-control-label">選択</label>
+              </div>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="save-change">確定</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--# TODO: Refactor after merged-->
+<script>
+    $(document).ready(function () {
+        var selectedArr = [];
+        $('#prefecture').select2({
+            allowClear: true,
+            ajax: {
+                url: "/admins/search_by_prefecture",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {name: params.term};
+                },
+                processResults: function (data) {
+                    console.log(data);
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            placeholder: 'すべて',
+        });
+        $('#prefecture').change(function () {
+            $('#area').val('');
+        });
+        $('#area').select2({
+            allowClear: true,
+            ajax: {
+                url: "/admins/search_by_area",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {name: params.term, prefecture: $('#prefecture').val()};
+                },
+                processResults: function (data) {
+                    console.log(data);
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            placeholder: 'すべて',
+        });
+
+        initDataTable();
+        $('#prefecture,#area').change(function () {
+            console.log('change');
+            $('#selectAll').prop('checked', false);
+            $('#modalTable').data({
+                prefecture_id: $('#prefecture').val(),
+                area_id: $('#area').val()
+            }).DataTable().ajax.reload();
+        });
+        $('#selectAll').click(function () {
+            if ($(this).prop('checked')) {
+                $('.checkbox-item').prop('checked', true);
+            } else {
+                $('.checkbox-item').prop('checked', false);
+            }
+        });
+
+        $('#exampleModal').on('click', '.checkbox-item', function () {
+            $('#selectAll').prop('checked', $('.checkbox-item').length == $('.checkbox-item:checked').length)
+        });
+        $('#save-change').click(function () {
+            selectedArr = [];
+            var selected_value = $('.checkbox-item:checked').map(function () {
+                selectedArr.push({id: $(this).val(), name: $(this).parents('td').prev().text()});
+            });
+            var totalOptions = '';
+            for (var i = 0; i < selectedArr.length; i++) {
+                totalOptions += '<option value="' + selectedArr[i]['id'] + '" selected="selected">' + selectedArr[i]['name'] + '</option>'
+            }
+            $('#selectedStore').html(totalOptions);
+            console.log(selectedArr);
+            $("[data-dismiss=modal]").trigger({ type: "click" });
+        });
+
+        function initDataTable() {
+            var store_ids = [];
+            if ($('#admin_id').length) {
+                store_ids = JSON.parse($('#admin_id').val());
+            }
+            $('#modalTable').DataTable({
+                render: "bootstrap",
+                serverSide: false,
+                searching: false,
+                ordering: false,
+                scrollY: true,
+                "pagingType": "simple_numbers",
+                "bPaginate": false,
+                "bSort": false,
+                ajax: {
+                    url: '/admins/search_stores',
+                    type: 'get',
+                    data: function () {
+                        return {
+                            prefecture_id: $('#prefecture').val(),
+                            area_id: $('#area').val(),
+                            admin_id: $('#admin_id').val()
+                        };
+                    },
+                },
+                "columns": [
+                    {"data": "prefecture_name"},
+                    {"data": "area_name"},
+                    {"data": "name"},
+                    {
+                        "data": "id",
+                        "render": function (data) {
+                            var checked = store_ids.indexOf(data) >= 0 ? 'checked' : '';
+                            var s = `<div class="custom-control custom-checkbox">
+                                <input type="checkbox" id=${data} value=${data} ${checked} class="checkbox-item custom-control-input">
+                                <label for=${data} class="custom-control-label"></label>
+                                </div>`;
+
+                            return s;
+                        }
+                    },
+                ],
+            });
+        }
+    })
+</script>

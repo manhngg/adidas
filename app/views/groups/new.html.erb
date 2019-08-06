@@ -1,0 +1,26 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to 'グループ管理', groups_path(store_id: @store.id) %></li>
+  <li class="breadcrumb-item active" aria-current="page">新規追加</li>
+</ol>
+
+<%= form_tag(groups_path, method: :post, class: "horizontal-form") do %>
+  <%= render "shared/error_messages", model: @group %>
+  <%= hidden_field_tag :store_id, @store.id %>
+
+  <div class="form-group">
+    <%= label_tag :カテゴリ %>
+    <%= select_tag 'type', options_for_select([["掲示板", "message"], ["トランシーバ", "transceiver"]]),
+      class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag :グループ名 %>
+    <%= text_field_tag :name, params[:name], class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= link_to '戻る', groups_path(store_id: @store.id) %>
+    <%= submit_tag '追加', name: nil, class: "btn btn-rounded btn-primary" %>
+  </div>
+<% end %>

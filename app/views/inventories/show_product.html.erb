@@ -1,0 +1,81 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to "棚卸管理", inventories_path(store_id: @store.id) %></li>
+  <li class="breadcrumb-item active" aria-current="page">実査照合</li>
+</ol>
+
+<section class="top-info">
+  <span>在庫評価額合計: <%= number_to_currency(@stock_sum_price, :format => "%u%n", :unit => "￥") %>円</span>
+  <span>実査評価額合計: <%= number_to_currency(@inventory_sum_price, :format => "%u%n", :unit => "￥") %>円</span>
+  <span>差額: <%= number_to_currency(@minus_price, :format => "%u%n", :unit => "￥") %>円</span>
+</section>
+
+<section class="search-form">
+  <%= search_form_for(@q, url: product_inventories_inventory_path(@inventory), html: { method: :get }) do |f| %>
+    <%= hidden_field_tag :store_id, @store.id  %>
+
+    <div class="form-group">
+      <%= f.label '照合状態' %>
+      <%= f.select :unmatched_flag_eq, options_for_select([
+                                                            ['', ''],
+                                                            ['超える', 2],
+                                                            ['等しい', 1],
+                                                            ['未満', 0]
+      ], @q.unmatched_flag_eq ), {}, class: "form-control"  %>
+    </div>
+  
+    <div class="form-group">
+      <%= f.label 'JANコード' %>
+      <%= f.text_field :jan_code_cont, class: "form-control" %>
+    </div>
+  
+    <div class="actions">
+      <%= button_tag type: :submit, name: nil, class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">search</i>
+        <span>検索</span>
+      <% end %>
+
+      <%= button_tag type: :submit, name: 'super_search', class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">youtube_searched_for</i>
+        <span>横断検索</span>
+      <% end %>
+
+      <%= button_tag type: :submit, name: 'export_csv', class: "btn btn-icon btn-outline-primary" do %>
+        <i class="material-icons">cloud_download</i>
+        <span>CSV出力</span>
+      <% end %>
+    </div>
+
+  <% end %>
+</section>
+
+<section class="page-pagination">
+  <%= paginate @product_inventories %>
+</section>
+
+<table class="table table-list ">
+  <thead>
+    <th>商品名</th>
+    <th>JANコード</th>
+    <th>在庫数</th>
+    <th>実査数</th>
+    <th>照合状態</th>
+    <th>実査日</th>
+  </thead>
+  <tbody>
+    <% @product_inventories.each do |product_inventory| %>
+      <tr>
+        <td><%= product_inventory.product_name %> </td>
+        <td><%= product_inventory.jan_code %> </td>
+        <td><%= product_inventory.stock_count %> </td>
+        <td><%= product_inventory.inventory_count %> </td>
+        <td><%= product_inventory.diff_number %> </td>
+        <td><%= product_inventory.inventory_time %> </td>
+        <td><%= link_to '詳細', shelf_stock_inventories_inventory_path(product_inventory.inventory,product_inventory, store_id: @store.id),
+          class: "btn btn-sm btn-rounded btn-outline-primary" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to '戻る', inventories_path(store_id: @store.id) %>

@@ -1,0 +1,34 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><%= link_to '店舗データ管理', stores_path %></li>
+  <li class="breadcrumb-item active" aria-current="page">編集</li>
+</ol>
+
+<%= form_with model: @store, local: true, class: "horizontal-form" do |f| %>
+  <%= render 'shared/error_messages', model: @store %>
+
+  <div class="form-group">
+    <%= f.label :region %>
+    <%=f.collection_select :region_id, Region.all, :id, :name, {}, {selected: @store.region.id, class: "form-control"} %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :prefecture %>
+    <%= render 'prefecture', region_id: @store.region_id %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :area %>
+    <%= render 'area', prefecture_id: @store.prefecture_id %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= link_to '戻る', stores_path %>
+    <%= f.submit '更新', class: "btn btn-rounded btn-primary" %>
+  </div>
+<% end %>

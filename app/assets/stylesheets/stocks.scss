@@ -1,0 +1,16 @@
+// Place all the styles related to the Stocks controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.item_list{
+  position:absolute;
+  display:none;
+  background:white;
+}
+
+.item_list li{
+  display:inherit;
+}
+.item_list li:hover{
+  background:blue;
+}
