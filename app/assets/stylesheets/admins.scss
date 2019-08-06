@@ -22,3 +22,16 @@ table td {
 div.field_with_errors {
   display: contents;
 }
+
+.custom-file {
+  position: relative;
+  display: inline-block;
+  width: 69% !important;
+  height: calc(1.5em + 0.75rem + 2px);
+  margin-bottom: 0;
+}
+
+.button-import {
+  padding: 0.29rem 0.75rem !important;
+  margin-top: 5px;
+}

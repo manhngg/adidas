@@ -62,9 +62,11 @@ class AdminsController < BaseController
     if params[:file].present? && params[:file].original_filename &&
         File.extname(params[:file].original_filename) == ".csv"
       import = Admin.import params[:file]
-      redirect_to import_admins_url, notice: import.values
+      redirect_to import_admins_url
+      flash[:notice] = import.values.first
+      flash[:alert] = import.values.reject{|value| value == import.values.first}
     else
-      redirect_to import_admins_url, alert: t("flash.csv_not_found")
+      redirect_to import_admins_url, notice: t("flash.csv_not_found")
     end
   end
 

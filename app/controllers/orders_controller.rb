@@ -62,9 +62,11 @@ class OrdersController < BaseController
     if params[:file].present? && params[:file].original_filename &&
         File.extname(params[:file].original_filename) == ".csv"
       import = @store.orders.import(params[:file], @store)
-      redirect_to import_orders_url(store_id: @store.id), notice: import.values
+      redirect_to import_orders_url(store_id: @store.id)
+      flash[:notice] = import.values.first
+      flash[:alert] = import.values.reject{|value| value == import.values.first}
     else
-      redirect_to import_orders_url(store_id: @store.id), alert: t("flash.csv_not_found")
+      redirect_to import_orders_url(store_id: @store.id), notice: t("flash.csv_not_found")
     end
   end
 

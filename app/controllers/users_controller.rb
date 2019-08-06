@@ -60,10 +60,12 @@ class UsersController < BaseController
   def csv_import
     if params[:file].present? && params[:file].original_filename &&
         File.extname(params[:file].original_filename) == ".csv"
-      @import = User.import(params[:file], @store.id)
-      redirect_to import_users_url(store_id: @store.id), notice: @import.values
+      import = User.import(params[:file], @store.id)
+      redirect_to import_users_url(store_id: @store.id)
+      flash[:notice] = import.values.first
+      flash[:alert] = import.values.reject{|value| value == import.values.first}
     else
-      redirect_to import_users_url(store_id: @store.id), alert: t("flash.csv_not_found")
+      redirect_to import_users_url(store_id: @store.id), notice: t("flash.csv_not_found")
     end
   end
 

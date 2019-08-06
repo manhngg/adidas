@@ -1,0 +1,22 @@
+<%= form_tag({controller: controller_name, action: "csv_import", method: "post"},
+  {class: "horizontal-form", multipart: true}) do %>
+
+  <%= hidden_field_tag :store_id, store_id %>
+
+  <div class="custom-file">
+    <%= file_field_tag :file, class: "custom-file-input", id: "choose-file-import" %>
+    <label class="custom-file-label" for="file">輸入</label>
+  </div>
+
+  <%= button_tag type: :submit, class: "btn btn-icon btn-outline-primary button-import" do %>
+    <i class="material-icons">present_to_all</i>
+    <span>インポート</span>
+  <% end %>
+  <br /><br />
+
+  <%= link_to '戻る', path, class: "float-right" %>
+
+  <br /><br />
+
+  <%= render "layouts/flash_import_errors" %>
+<% end %>

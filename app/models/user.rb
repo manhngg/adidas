@@ -46,8 +46,8 @@ class User < ApplicationRecord
   # validates :encrypted_password, presence: true, length: {minimum: 8}
 
   def set_user_name
-    self.full_name = first_name + last_name
-    self.full_name_furigana = first_name_furigana + last_name_furigana
+    self.full_name = (first_name + last_name) if first_name && last_name
+    self.full_name_furigana = (first_name_furigana + last_name_furigana) if first_name && last_name
   end
 
   def email_required?

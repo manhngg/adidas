@@ -4,20 +4,4 @@
   <li class="breadcrumb-item active" aria-current="page">インポート</li>
 </ol>
 
-<%= render "layouts/flash_import_errors" %>
-
-<%= form_tag({controller: "stores", action: "csv_import", method: "post"},
-  {multipart: true, class: "horizontal-form"}) do %>
-  <div class="form-group">
-    <%= label_tag "輸入" %>
-    <%= file_field_tag :file %>
-  </div>
-
-  <div class="actions">
-    <%= link_to '戻る', stores_path %>
-    <%= button_tag type: :submit, class: "btn btn-icon btn-outline-primary" do %>
-      <i class="material-icons">present_to_all</i>
-      <span>インポート</span>
-    <% end %>
-  </div>
-<% end %>
+<%= render "shared/import", store_id: nil, path: stores_path %>

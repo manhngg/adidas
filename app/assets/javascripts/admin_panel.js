@@ -1,4 +1,11 @@
 $(document).ready(function() {
+  $('#choose-file-import').on('change',function(){
+      //get the file name
+      var fileName = $(this).val();
+      splitName = fileName.split("\\")[fileName.split("\\").length-1];
+      //replace the "Choose a file" label
+      $(this).next('.custom-file-label').html(splitName);
+  })
 
   $('#menuButton').on("click", function() {
     if (localStorage.getItem("close_sidebar_menu") == "false") {
